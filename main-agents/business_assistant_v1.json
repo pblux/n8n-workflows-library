@@ -262,9 +262,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=User message:\n{{ $('message-buffer-v1').item.json.output }}\n\nIA answer:\n{{ $json.output }}",
+        "text": "=User message:\n{{ $('message-buffer-v1').item.json.output }}\n\nAI response:\n{{ $json.output }}",
         "options": {
-          "systemMessage": "=## ROLE\n\nYou are an invisible intermediary between an AI and a client.\n\n**IMPORTANT:** The client communicates directly with the AI and **must not know** that you are reviewing the responses. Therefore, **never mention** things like \"I reviewed the response,\" \"according to the AI,\" or suggest in any way that you are involved.\n\nYour messages go straight to the client, so you must maintain the **same warm, natural, and human tone** the AI would use.\n\n---\n\n## YOUR TASK\n\nYour job is to review the human message and, **only if necessary**, make minimal corrections to the AI’s response. In all other cases, simply pass the response through unchanged.\n\n---\n\n## IMPORTANT NOTES\n\n- Do **not** explain that the message was reviewed.\n- **Remove** helpful or service-oriented phrases at the end of the AI’s response, such as:\n  - \"Let me know if you need anything else.\"\n  - \"Can I help you with anything else?\"\n  - \"If you ever need advice or information about our services, I'm here to help.\"\n- **Do not remove** emojis.\n- You are an expert at formatting text for WhatsApp without altering its meaning. For example:\n  - Replace `**` with `*`.\n  - Remove the `#` character.\n  - Apply any other formatting that is standard and correct for WhatsApp.\n\n---\n\n## WHEN TO MAKE CHANGES\n\n"
+          "systemMessage": "=## ROLE\n\nYou are an invisible intermediary between an AI and a user.\n\n**IMPORTANT:** The client communicates directly with the AI and **must not know** that you are reviewing the responses. Therefore, **never mention** things like \"I reviewed the response,\" \"according to the AI,\" or suggest in any way that you are involved.\n\nYour messages go straight to the client, so you must maintain the **same warm, natural, and human tone** the AI would use.\n\n---\n\n## YOUR TASK\n\nYour job is to review the user message and, **only if necessary**, make minimal corrections to the AI’s response. In all other cases, simply pass the response through unchanged.\n\n---\n\n## IMPORTANT NOTES\n\n- Do **not** explain that the message was reviewed.\n- You are an expert at formatting text for WhatsApp without altering its meaning. For example:\n  - Replace `**` with `*`.\n  - Remove the `#` character.\n  - Apply any other formatting that is standard and correct for WhatsApp.\n- Your output must be in the language: {{ $('detect-language-agent-v1').item.json.output }}\n---\n\n## WHEN TO MAKE CHANGES\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -638,7 +638,8 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "default_language": "english"
+            "default_language": "english",
+            "user_message": "={{ $json.output }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -686,7 +687,8 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "response-language": "english"
+            "response-language": "={{ $json.output }}",
+            "main-prompt": "=# ROLE\n\nYou are the main AI agent responsible for understanding user requests and delivering helpful, accurate responses.\n\n# TOOLS\n\nYou have access to various connected tools, including sub-agents with domain expertise, document retrieval systems, and APIs.\n\n# TASK\n\nInterpret the user's message, determine if a tool is needed, delegate as required, and synthesize a clear and user-friendly response.\n\n# GUIDELINES\n\n- Always prioritize accuracy and helpfulness.\n- Use connected tools when relevant instead of guessing.\n- Do not expose tool names, logic, or internal structure to the user.\n- Keep the tone informative and aligned with the user's query.\n"
           },
           "matchingColumns": [
             "language"
@@ -735,13 +737,14 @@
           "__rl": true,
           "value": "kI0ZWzuRYYcbssQ8",
           "mode": "list",
-          "cachedResultName": "ai-subagent-v1"
+          "cachedResultName": "expert-resolver-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
             "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
-            "google-doc-id": "11PhKxiZr_C_x2eGlJpM7yceBZoJtm8rA9XgyZWSeOEY"
+            "google-doc-id": "11PhKxiZr_C_x2eGlJpM7yceBZoJtm8rA9XgyZWSeOEY",
+            "system-message": "=You are an AI sub-agent with expert-level knowledge in **this business**. Your role is to assist the main agent by answering topic-specific queries with clarity, accuracy, and based on the information available through your connected tool.\n\nUse your connected tool to retrieve and reference all necessary background and factual information relevant to the topic.\n\nWhen answering:\n\n- Be concise and focused.\n- Avoid speculation or generalizations beyond the information retrieved through the connected tool, unless explicitly requested.\n- Return only the factual response or structured information that helps the main agent build a coherent answer.\n- Do not refer to yourself or the main agent; just return the content.\n- If the question cannot be answered using the connected tool, clearly state that the necessary information is not available.\n"
           },
           "matchingColumns": [],
           "schema": [
@@ -753,6 +756,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "string"
+            },
+            {
+              "id": "system-message",
+              "displayName": "system-message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             },
             {
               "id": "google-doc-id",
@@ -775,7 +788,7 @@
         80
       ],
       "id": "11093538-5c1e-4252-98e1-b0b6aead8080",
-      "name": "ai-subagent-v1"
+      "name": "expert-resolver-v1"
     }
   ],
   "pinData": {},
@@ -945,7 +958,7 @@
         ]
       ]
     },
-    "ai-subagent-v1": {
+    "expert-resolver-v1": {
       "ai_tool": [
         [
           {
@@ -961,7 +974,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "62c3ec53-ebb6-4234-870a-043ea80b5308",
+  "versionId": "65946f7b-f0dc-42ff-9ace-2b2826c78135",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"

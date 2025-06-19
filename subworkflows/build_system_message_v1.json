@@ -43,7 +43,7 @@
         "operation": "formatDate",
         "date": "={{ $now }}",
         "format": "custom",
-        "customFormat": "cccc, d 'de' LLLL 'de' y, 'y la hora es:' tt",
+        "customFormat": "cccc, LLLL d 'of' y, 'and the time is:' tt",
         "outputFieldName": "formatted_date",
         "options": {
           "timezone": true
@@ -189,7 +189,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "063de1ee-a7ed-4d4c-871a-7b4c646374fe",
+  "versionId": "e41be5b3-644b-461d-b4bc-bf652acbc2cd",
   "meta": {
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
