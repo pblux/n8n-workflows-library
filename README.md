@@ -96,8 +96,7 @@ Converts audio or video messages into text using OpenAI's transcription tools.
 
 ### 🌍 detect-language-agent
 
-Detects the user's language for downstream use.  
-Includes a system message (`system-message.md`) to define how to handle ambiguous input.
+Detects the user's language for downstream use.
 
 ![Detect language agent](subworkflows/screenshots/detect-language-agent.png)
 

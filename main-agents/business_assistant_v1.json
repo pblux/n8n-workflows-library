@@ -1,5 +1,5 @@
 {
-  "name": "business-assistant",
+  "name": "business-assistant-v1",
   "nodes": [
     {
       "parameters": {
@@ -60,8 +60,8 @@
             },
             {
               "id": "e24befd1-922a-42fc-80b4-ad26331ed110",
-              "name": "flowdata.human-temp",
-              "value": "={{ $json.body.conversation.labels.includes(\"human-temp\") }}",
+              "name": "flowdata.human-pause",
+              "value": "={{ $json.body.conversation.labels.includes(\"human-pause\") }}",
               "type": "boolean"
             },
             {
@@ -262,7 +262,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=User message:\n{{ $('message-buffer').item.json.output }}\n\nIA answer:\n{{ $json.output }}",
+        "text": "=User message:\n{{ $('message-buffer-v1').item.json.output }}\n\nIA answer:\n{{ $json.output }}",
         "options": {
           "systemMessage": "=## ROLE\n\nYou are an invisible intermediary between an AI and a client.\n\n**IMPORTANT:** The client communicates directly with the AI and **must not know** that you are reviewing the responses. Therefore, **never mention** things like \"I reviewed the response,\" \"according to the AI,\" or suggest in any way that you are involved.\n\nYour messages go straight to the client, so you must maintain the **same warm, natural, and human tone** the AI would use.\n\n---\n\n## YOUR TASK\n\nYour job is to review the human message and, **only if necessary**, make minimal corrections to the AI’s response. In all other cases, simply pass the response through unchanged.\n\n---\n\n## IMPORTANT NOTES\n\n- Do **not** explain that the message was reviewed.\n- **Remove** helpful or service-oriented phrases at the end of the AI’s response, such as:\n  - \"Let me know if you need anything else.\"\n  - \"Can I help you with anything else?\"\n  - \"If you ever need advice or information about our services, I'm here to help.\"\n- **Do not remove** emojis.\n- You are an expert at formatting text for WhatsApp without altering its meaning. For example:\n  - Replace `**` with `*`.\n  - Remove the `#` character.\n  - Apply any other formatting that is standard and correct for WhatsApp.\n\n---\n\n## WHEN TO MAKE CHANGES\n\n"
         }
@@ -349,7 +349,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('message-buffer').item.json.output }}",
+        "text": "={{ $('message-buffer-v1').item.json.output }}",
         "options": {
           "systemMessage": "={{ $json.system_message }}",
           "maxIterations": 10
@@ -370,14 +370,14 @@
           "__rl": true,
           "value": "90JAgf2o1Fb4YUB4",
           "mode": "list",
-          "cachedResultName": "firewall"
+          "cachedResultName": "firewall-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
             "human": "={{ $json.flowdata.human }}",
             "incoming": "={{ $json.flowdata.incoming }}",
-            "human-temp": "={{ $json.flowdata['human-temp'] }}",
+            "human-temp": "={{ $json.flowdata['human-pause'] }}",
             "conversation_id": "={{ $json.flowdata.conversation_id }}",
             "account_id": "={{ $json.flowdata.account_id }}",
             "message_id": "={{ $json.flowdata.message_id }}",
@@ -483,7 +483,7 @@
         -140
       ],
       "id": "5a8d7825-1831-474a-9d8c-0bd1a5ffe5d3",
-      "name": "firewall"
+      "name": "firewall-v1"
     },
     {
       "parameters": {
@@ -491,7 +491,7 @@
           "__rl": true,
           "value": "95Y7XRxRHfBKKudD",
           "mode": "list",
-          "cachedResultName": "transcribe-media"
+          "cachedResultName": "transcribe-media-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -554,7 +554,7 @@
         -140
       ],
       "id": "2d8ab7e7-dd30-48a0-a04e-521ecce6cc21",
-      "name": "transcribe-media"
+      "name": "transcribe-media-v1"
     },
     {
       "parameters": {
@@ -562,7 +562,7 @@
           "__rl": true,
           "value": "xZDlv3ZFE1h36MYb",
           "mode": "list",
-          "cachedResultName": "message-buffer"
+          "cachedResultName": "message-buffer-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -625,7 +625,55 @@
         -140
       ],
       "id": "f7094b03-0d0d-4a77-884e-0b2d6dcce1ec",
-      "name": "message-buffer"
+      "name": "message-buffer-v1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PhtBjmpScsY7YrrN",
+          "mode": "list",
+          "cachedResultName": "detect-language-agent-v1"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "default_language": "english"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "default_language",
+              "displayName": "default_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1140,
+        -140
+      ],
+      "id": "08b11f95-9fd8-4100-970c-0d45ddcaf52b",
+      "name": "detect-language-agent-v1"
     },
     {
       "parameters": {
@@ -633,7 +681,7 @@
           "__rl": true,
           "value": "o88GDhdNEmtzg9SY",
           "mode": "list",
-          "cachedResultName": "build-system-message"
+          "cachedResultName": "build-system-message-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -679,55 +727,7 @@
         -140
       ],
       "id": "d3ce7419-05bc-4cc7-b3b1-aab27595b3bd",
-      "name": "build-system-message"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "PhtBjmpScsY7YrrN",
-          "mode": "list",
-          "cachedResultName": "detect-language-agent"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "default_language": "english"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "user_message",
-              "displayName": "user_message",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            },
-            {
-              "id": "default_language",
-              "displayName": "default_language",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.2,
-      "position": [
-        1140,
-        -140
-      ],
-      "id": "08b11f95-9fd8-4100-970c-0d45ddcaf52b",
-      "name": "detect-language-agent"
+      "name": "build-system-message-v1"
     },
     {
       "parameters": {
@@ -735,7 +735,7 @@
           "__rl": true,
           "value": "kI0ZWzuRYYcbssQ8",
           "mode": "list",
-          "cachedResultName": "ai-subagent"
+          "cachedResultName": "ai-subagent-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -775,7 +775,7 @@
         80
       ],
       "id": "11093538-5c1e-4252-98e1-b0b6aead8080",
-      "name": "ai-subagent"
+      "name": "ai-subagent-v1"
     }
   ],
   "pinData": {},
@@ -872,7 +872,7 @@
       "main": [
         [
           {
-            "node": "firewall",
+            "node": "firewall-v1",
             "type": "main",
             "index": 0
           }
@@ -890,40 +890,51 @@
         ]
       ]
     },
-    "firewall": {
+    "firewall-v1": {
       "main": [
         [
           {
-            "node": "transcribe-media",
+            "node": "transcribe-media-v1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "transcribe-media": {
+    "transcribe-media-v1": {
       "main": [
         [
           {
-            "node": "message-buffer",
+            "node": "message-buffer-v1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "message-buffer": {
+    "message-buffer-v1": {
       "main": [
         [
           {
-            "node": "detect-language-agent",
+            "node": "detect-language-agent-v1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "build-system-message": {
+    "detect-language-agent-v1": {
+      "main": [
+        [
+          {
+            "node": "build-system-message-v1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build-system-message-v1": {
       "main": [
         [
           {
@@ -934,18 +945,7 @@
         ]
       ]
     },
-    "detect-language-agent": {
-      "main": [
-        [
-          {
-            "node": "build-system-message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "ai-subagent": {
+    "ai-subagent-v1": {
       "ai_tool": [
         [
           {
@@ -961,7 +961,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "1e7f8de8-9ab1-4d35-aab7-7969774ccc6e",
+  "versionId": "62c3ec53-ebb6-4234-870a-043ea80b5308",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"

@@ -1,5 +1,5 @@
 {
-  "name": "human-pause",
+  "name": "human-pause-v1",
   "nodes": [
     {
       "parameters": {
@@ -7,8 +7,11 @@
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [440, -360],
-      "id": "3d3f1feb-ee49-4dd1-9e13-a1034851afe3",
+      "position": [
+        0,
+        400
+      ],
+      "id": "85007b1e-202f-47e8-9575-b809c04bb022",
       "name": "Wait 5'",
       "webhookId": "cc05287a-20ac-4ff4-be58-c10497df0db7"
     },
@@ -21,12 +24,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-220, -460],
-      "id": "68f6311e-077c-44f3-8e36-cd6fcc59db9c",
+      "position": [
+        -660,
+        300
+      ],
+      "id": "67161cd9-6f47-4cf3-9327-2942859d4764",
       "name": "Push messages",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -41,12 +47,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-880, -460],
-      "id": "d5413bbe-d4b1-4d7f-a643-0db97dab2b44",
+      "position": [
+        -1320,
+        300
+      ],
+      "id": "4eccf886-e2a6-476f-923f-d4c7cec1c863",
       "name": "Get client messages",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -87,8 +96,11 @@
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [-660, -460],
-      "id": "32004514-81e6-455a-a791-d18399a5209d",
+      "position": [
+        -1100,
+        300
+      ],
+      "id": "4ae3002f-46ad-4307-b5c3-077f83e22963",
       "name": "Switch2"
     },
     {
@@ -152,55 +164,12 @@
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [220, -560],
-      "id": "9c1c0045-9f94-427d-9522-c83613c73c77",
+      "position": [
+        -220,
+        200
+      ],
+      "id": "2ca15bbf-a356-4bde-8780-b1e450371df0",
       "name": "Switch"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "{\n  \"labels\": [\"human-temp\"]\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [-440, -535],
-      "id": "4039b8fd-6958-47ca-844d-254355b8d32b",
-      "name": "Add \"human-temp\" label",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "kIqqJ5gnOe0hGZmz",
-          "name": "Chatwoot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "{\n  \"labels\": [\"\"]\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [440, -560],
-      "id": "ebb1a713-420f-404a-a74b-2ca4e1027c34",
-      "name": "Delete \"human-temp\" label",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "kIqqJ5gnOe0hGZmz",
-          "name": "Chatwoot"
-        }
-      }
     },
     {
       "parameters": {
@@ -209,12 +178,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [660, -560],
-      "id": "0fa3157d-e95b-4963-a506-eec691026ab7",
+      "position": [
+        220,
+        200
+      ],
+      "id": "96b18dc5-663a-4f1f-886a-011ea6947f53",
       "name": "Delete client messages",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -246,11 +218,14 @@
           ]
         }
       },
-      "id": "2e3703a5-3a32-47b0-81ad-a1b9fc724574",
+      "id": "9635d5c1-407f-4629-9071-d488a11ed890",
       "typeVersion": 1.1,
       "name": "Start",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "position": [-1100, -460]
+      "position": [
+        -1540,
+        300
+      ]
     },
     {
       "parameters": {
@@ -262,12 +237,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [0, -460],
-      "id": "738a6707-7c67-46b4-bcde-0c19428f5a3b",
+      "position": [
+        -440,
+        300
+      ],
+      "id": "238d6e03-7248-4c77-9766-d145c4a2094f",
       "name": "Get messages",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -299,8 +277,11 @@
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
-      "position": [440, -760],
-      "id": "ed375f41-6845-43b0-ad21-76968adb04f9",
+      "position": [
+        0,
+        0
+      ],
+      "id": "f2b17e84-1ed1-4872-90fa-58fbb12ab4ed",
       "name": "Filter"
     },
     {
@@ -330,9 +311,64 @@
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
-      "position": [880, -560],
-      "id": "33d4ea21-5fb5-4a14-a442-b4f9ae4ef859",
+      "position": [
+        440,
+        200
+      ],
+      "id": "2aad0e99-4c6f-443c-af7c-f86cfd19efea",
       "name": "Filter 2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"labels\": [\"\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        200
+      ],
+      "id": "edba7c02-3f4a-4537-8a75-1fa0bbf72088",
+      "name": "Delete labels",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a89hEWXzRSBs7DUC",
+          "name": "Chatwoot - Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"labels\": [\"human-pause\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -880,
+        225
+      ],
+      "id": "24c0d8fa-745f-4ce7-8b2f-21056e20c933",
+      "name": "Add \"human-pause\" label",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a89hEWXzRSBs7DUC",
+          "name": "Chatwoot - Header Auth account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -348,7 +384,7 @@
         ],
         [
           {
-            "node": "Delete \"human-temp\" label",
+            "node": "Delete labels",
             "type": "main",
             "index": 0
           }
@@ -384,28 +420,6 @@
         ]
       ]
     },
-    "Add \"human-temp\" label": {
-      "main": [
-        [
-          {
-            "node": "Push messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Delete \"human-temp\" label": {
-      "main": [
-        [
-          {
-            "node": "Delete client messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Get client messages": {
       "main": [
         [
@@ -421,7 +435,7 @@
       "main": [
         [
           {
-            "node": "Add \"human-temp\" label",
+            "node": "Add \"human-pause\" label",
             "type": "main",
             "index": 0
           }
@@ -468,18 +482,38 @@
         ]
       ]
     },
-    "Filter": {
-      "main": [[]]
+    "Delete labels": {
+      "main": [
+        [
+          {
+            "node": "Delete client messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add \"human-pause\" label": {
+      "main": [
+        [
+          {
+            "node": "Push messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "911442c7-ec6f-44ce-bdcd-bdfaaf1b7909",
+  "versionId": "e1238092-f8d8-4fef-a4d5-17d09541c7a1",
   "meta": {
-    "instanceId": "3dc0444e9facd55476a324d2cf4b7db142c09ed6afd956ef890f79f52a98e0d2"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "jXK1k08fnvjZIXjG",
+  "id": "kvDyVepRpHFbff8h",
   "tags": []
 }

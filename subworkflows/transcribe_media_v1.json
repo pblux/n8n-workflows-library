@@ -1,5 +1,5 @@
 {
-  "name": "transcribe-media",
+  "name": "transcribe-media-v1",
   "nodes": [
     {
       "parameters": {
@@ -64,8 +64,11 @@
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [-820, 180],
-      "id": "2a9f0892-30f5-41ef-b8e3-7188af50b3ce",
+      "position": [
+        -780,
+        140
+      ],
+      "id": "d799aa12-b94f-4cfd-8f88-8ddbc1f9f047",
       "name": "Content type"
     },
     {
@@ -76,12 +79,15 @@
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
-      "position": [-160, -20],
-      "id": "8d522d91-fd77-42d5-b786-9a602d2487a5",
+      "position": [
+        -120,
+        -60
+      ],
+      "id": "8fe576f0-7a33-4672-92cb-6efc329363e6",
       "name": "Audio transcriber",
       "credentials": {
         "openAiApi": {
-          "id": "E4GWzJ8bXGCGgaiL",
+          "id": "rsPJz7hiU81aTa8b",
           "name": "OpenAi account"
         }
       }
@@ -101,12 +107,15 @@
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
-      "position": [-160, 180],
-      "id": "c038c4c9-ea85-4221-8d98-0d88920321fa",
+      "position": [
+        -120,
+        140
+      ],
+      "id": "f0b3be3a-1f21-41a5-87b5-bccf5d37ab0a",
       "name": "OpenAI",
       "credentials": {
         "openAiApi": {
-          "id": "E4GWzJ8bXGCGgaiL",
+          "id": "rsPJz7hiU81aTa8b",
           "name": "OpenAi account"
         }
       }
@@ -118,8 +127,11 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-600, 80],
-      "id": "32d3344f-ea0c-4617-a68d-b9e58072fb77",
+      "position": [
+        -560,
+        40
+      ],
+      "id": "19d60bc1-f22d-465d-92e7-b2965aeed338",
       "name": "Download attachment"
     },
     {
@@ -182,8 +194,11 @@
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [-380, 80],
-      "id": "2a45e176-0c15-491f-9959-f9512646c6de",
+      "position": [
+        -340,
+        40
+      ],
+      "id": "bda1f7b8-112b-4460-8b16-496d2a401935",
       "name": "Attachment type"
     },
     {
@@ -202,8 +217,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [-600, 280],
-      "id": "418d5289-3999-405f-9957-2fc3d9834a44",
+      "position": [
+        -560,
+        240
+      ],
+      "id": "353d8c89-8daf-40aa-b434-967ef0ee664f",
       "name": "Get text"
     },
     {
@@ -222,8 +240,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [60, -20],
-      "id": "6099248d-65e7-496d-bb9c-8ebe15eadf8e",
+      "position": [
+        100,
+        -60
+      ],
+      "id": "ff9e1e66-36ce-4814-9d86-b4a2dea91268",
       "name": "Get text from audio"
     },
     {
@@ -242,8 +263,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [60, 180],
-      "id": "4269760f-2b0c-45bc-8ca6-28d7852c84aa",
+      "position": [
+        100,
+        140
+      ],
+      "id": "ba56b7f2-e46e-4ee5-92c5-99f182498e87",
       "name": "Get text from image"
     },
     {
@@ -269,8 +293,11 @@
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
-      "position": [-1040, 180],
-      "id": "66e057bc-22e7-47ac-a287-aab323fe1b28",
+      "position": [
+        -1000,
+        140
+      ],
+      "id": "2a2d67da-eae5-485e-8cfd-9ab37bc123ad",
       "name": "When Executed by Another Workflow"
     }
   ],
@@ -368,11 +395,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f1c37fb9-3b17-4b27-972b-59839e2f7d28",
+  "versionId": "6219c8ce-8e67-404e-aa9f-1ba452598f30",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "HkyKOnEp815iVVf0",
+  "id": "95Y7XRxRHfBKKudD",
   "tags": []
 }

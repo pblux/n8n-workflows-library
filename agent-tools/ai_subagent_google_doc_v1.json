@@ -1,5 +1,5 @@
 {
-  "name": "ai-subagent",
+  "name": "ai-subagent-google-doc-v1",
   "nodes": [
     {
       "parameters": {
@@ -229,7 +229,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "2148f0ed-dae0-4cff-801e-525d77cfeb4e",
+  "versionId": "b77fcec2-affd-47ae-a073-ef2eb8607a53",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"

@@ -1,5 +1,5 @@
 {
-  "name": "firewall",
+  "name": "firewall-v1",
   "nodes": [
     {
       "parameters": {
@@ -43,8 +43,11 @@
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
-      "position": [-2640, -860],
-      "id": "49f79775-ce82-49d6-8a0c-c36aa1f06a14",
+      "position": [
+        -880,
+        100
+      ],
+      "id": "2063d639-cefc-441b-9f20-ec0e3f3b4ef7",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -74,16 +77,22 @@
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
-      "position": [-2200, -860],
-      "id": "a7140527-863a-46b7-9970-bd1b0319f94f",
+      "position": [
+        -440,
+        100
+      ],
+      "id": "d5decf77-0904-4c12-8735-150b487b3050",
       "name": "Filter human"
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [-1760, -960],
-      "id": "4f79b637-9f17-4d77-83af-306ce8f2fd68",
+      "position": [
+        0,
+        0
+      ],
+      "id": "c4f213fb-c9ef-4ba3-bbb2-ba51179d5a7f",
       "name": "Main flow"
     },
     {
@@ -123,8 +132,11 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [-1980, -860],
-      "id": "938bc3c5-44c7-4722-b7eb-8c685a819d0f",
+      "position": [
+        -220,
+        100
+      ],
+      "id": "43a00f3d-d937-45e5-a03e-96af849621f9",
       "name": "Incoming false?"
     },
     {
@@ -135,12 +147,6 @@
               "id": "fab6c9b2-1c36-4ca3-9ee5-1b2b80736150",
               "name": "human",
               "value": "={{ $json.human }}",
-              "type": "boolean"
-            },
-            {
-              "id": "2a94128a-3b7f-433a-80f3-935b0b7fee1a",
-              "name": "admin",
-              "value": "={{ $json.admin }}",
               "type": "boolean"
             },
             {
@@ -197,8 +203,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [-2420, -860],
-      "id": "eea6a193-e2c1-4eef-bffb-8b8c941fbbce",
+      "position": [
+        -660,
+        100
+      ],
+      "id": "9821fc62-a25f-4a7e-b497-58c43f90187b",
       "name": "Set data"
     },
     {
@@ -211,12 +220,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-1760, -760],
-      "id": "49c32f19-10ac-4b3c-ae9a-137156a19d97",
+      "position": [
+        0,
+        200
+      ],
+      "id": "9e55ab99-fd8f-4166-b97f-3fa78f87ac0d",
       "name": "Get bot message",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -231,6 +243,16 @@
             "version": 2
           },
           "conditions": [
+            {
+              "id": "a3bf78a2-2bfb-4ed4-9f55-640ed4012c4e",
+              "leftValue": "={{ JSON.parse($json.bot_message.first()) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
             {
               "id": "2502a693-3633-4f08-b368-3aff5a229ecb",
               "leftValue": "={{ JSON.parse($json.bot_message.first()) }}",
@@ -247,8 +269,11 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [-1540, -760],
-      "id": "35e5d2a0-5753-4d8b-9ce5-55ea421c6381",
+      "position": [
+        220,
+        200
+      ],
+      "id": "a3314db5-892c-4566-8e70-d021bba44ba2",
       "name": "Bot message?"
     },
     {
@@ -258,12 +283,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-1320, -860],
-      "id": "d8fc8413-375d-42b9-931d-bb1c7abb0177",
+      "position": [
+        440,
+        100
+      ],
+      "id": "0548d161-31bc-4e3e-8d71-2c880e72e1dd",
       "name": "Delete bot message",
       "credentials": {
         "redis": {
-          "id": "QaRH4HfWHKlCKgkN",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -295,17 +323,54 @@
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
-      "position": [-1100, -860],
-      "id": "514c20c9-43a9-4767-b349-c8be0fef40ec",
+      "position": [
+        660,
+        100
+      ],
+      "id": "fd38293b-52f9-4673-b8c3-ed5dfbee6665",
       "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
+              "leftValue": "filter",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        300
+      ],
+      "id": "c418c665-4df6-446b-8d4e-68588926318c",
+      "name": "Filter 2"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "jXK1k08fnvjZIXjG",
+          "value": "kvDyVepRpHFbff8h",
           "mode": "list",
-          "cachedResultName": "Human assignation"
+          "cachedResultName": "human-pause-v1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -379,40 +444,12 @@
       },
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
-      "position": [-1320, -660],
-      "name": "Call Human assignation",
-      "id": "273c9c68-fef8-40a0-a7d3-8bb511a00680"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
-              "leftValue": "filter",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [-1100, -660],
-      "id": "18213d3b-c52d-49f3-b393-9a887c924db7",
-      "name": "Filter1"
+      "position": [
+        440,
+        300
+      ],
+      "name": "human-pause-v1",
+      "id": "115201a1-fc10-4894-aef0-7c8159cbe66e"
     }
   ],
   "pinData": {},
@@ -490,7 +527,7 @@
         ],
         [
           {
-            "node": "Call Human assignation",
+            "node": "human-pause-v1",
             "type": "main",
             "index": 0
           }
@@ -508,11 +545,11 @@
         ]
       ]
     },
-    "Call Human assignation": {
+    "human-pause-v1": {
       "main": [
         [
           {
-            "node": "Filter1",
+            "node": "Filter 2",
             "type": "main",
             "index": 0
           }
@@ -522,16 +559,13 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "timezone": "America/Argentina/Buenos_Aires",
-    "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": 300
+    "executionOrder": "v1"
   },
-  "versionId": "f2716b43-0481-405c-8673-b11a63843086",
+  "versionId": "ae948a3e-50f5-40a2-9309-6b19b677e3d7",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "3dc0444e9facd55476a324d2cf4b7db142c09ed6afd956ef890f79f52a98e0d2"
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "pc36GegB0fSbujtt",
+  "id": "90JAgf2o1Fb4YUB4",
   "tags": []
 }

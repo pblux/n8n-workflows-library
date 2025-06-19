@@ -1,5 +1,5 @@
 {
-  "name": "detect-language-agent",
+  "name": "detect-language-agent-v1",
   "nodes": [
     {
       "parameters": {
@@ -16,8 +16,11 @@
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
-      "position": [-180, 0],
-      "id": "b47aed77-a5c9-4013-93af-1e7010cc8ee4",
+      "position": [
+        0,
+        0
+      ],
+      "id": "1f6330af-d094-4d14-a096-8e3a2a1e3614",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -30,8 +33,11 @@
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
-      "position": [40, 0],
-      "id": "ef0ca1d0-6d72-469f-acf2-1a19b64f785f",
+      "position": [
+        220,
+        0
+      ],
+      "id": "06b28928-9240-4ff1-9fb8-443eacc10197",
       "name": "AI Agent"
     },
     {
@@ -40,12 +46,15 @@
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
       "typeVersion": 1,
-      "position": [128, 220],
-      "id": "e4bf28ec-1e84-40e2-bf52-49ef03765735",
+      "position": [
+        308,
+        220
+      ],
+      "id": "627e985c-b4db-457e-99d8-aeb2e24eddfb",
       "name": "DeepSeek Chat Model",
       "credentials": {
         "deepSeekApi": {
-          "id": "5kR9TBzMrLBZLqdr",
+          "id": "zrmkVz9OjTv7XBQk",
           "name": "DeepSeek account"
         }
       }
@@ -78,16 +87,13 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "timezone": "America/Argentina/Buenos_Aires",
-    "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": 300
+    "executionOrder": "v1"
   },
-  "versionId": "4525f726-6373-44fd-9690-d246f3440bae",
+  "versionId": "91a32557-3222-4db7-a443-9ffd8014fd57",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "jSUlCnPr0KSwTeU4",
+  "id": "PhtBjmpScsY7YrrN",
   "tags": []
 }

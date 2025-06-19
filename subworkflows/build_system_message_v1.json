@@ -1,5 +1,5 @@
 {
-  "name": "build-system-message",
+  "name": "build-system-message-v1",
   "nodes": [
     {
       "parameters": {
@@ -189,7 +189,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "352dcae2-d8eb-4915-b520-c0d5d65619a8",
+  "versionId": "063de1ee-a7ed-4d4c-871a-7b4c646374fe",
   "meta": {
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },

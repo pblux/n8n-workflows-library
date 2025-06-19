@@ -1,5 +1,5 @@
 {
-  "name": "message-buffer",
+  "name": "message-buffer-v1",
   "nodes": [
     {
       "parameters": {
@@ -10,12 +10,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-280, 165],
-      "id": "407e1bde-b09d-4051-bac4-32b68ac56fc6",
+      "position": [
+        -660,
+        140
+      ],
+      "id": "e88743fd-fbca-43aa-958d-87436fa73a59",
       "name": "Get messages",
       "credentials": {
         "redis": {
-          "id": "W8G2Q3WYFq5dOko8",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -29,12 +32,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [-500, 165],
-      "id": "7338ec12-57f4-4577-9269-6655eb423545",
+      "position": [
+        -880,
+        140
+      ],
+      "id": "6eb91a4b-a70f-4dfc-a637-589b2e51c93e",
       "name": "Push messages",
       "credentials": {
         "redis": {
-          "id": "W8G2Q3WYFq5dOko8",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -45,8 +51,11 @@
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [380, 265],
-      "id": "72b1ea03-051e-43c4-8df9-d182c0fe3ad5",
+      "position": [
+        0,
+        240
+      ],
+      "id": "0e4da861-a99e-46dd-b102-6e44db60ad65",
       "name": "Wait",
       "webhookId": "6b0be606-3591-4ad8-b9f4-71326030a007"
     },
@@ -57,12 +66,15 @@
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
-      "position": [380, 40],
-      "id": "8a378d8e-4615-4c34-9083-cf7f9e7fe07a",
+      "position": [
+        0,
+        0
+      ],
+      "id": "afb10027-2fac-4b44-b419-f74620923c59",
       "name": "Delete messages",
       "credentials": {
         "redis": {
-          "id": "W8G2Q3WYFq5dOko8",
+          "id": "AT4Iqbzd8lEoYu8w",
           "name": "Redis account"
         }
       }
@@ -101,8 +113,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [-720, 165],
-      "id": "82ae341f-4639-465d-a4fb-e92dbc76a0e6",
+      "position": [
+        -1100,
+        140
+      ],
+      "id": "f795ee55-2cc5-433d-83f9-011d5dfd215c",
       "name": "Flowdata"
     },
     {
@@ -121,8 +136,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [600, 40],
-      "id": "c16c9b5c-c8e4-4a4e-adb8-c43cb5758311",
+      "position": [
+        220,
+        0
+      ],
+      "id": "c890c104-f656-4d40-b48a-4cd8315550b8",
       "name": "Join messages"
     },
     {
@@ -147,8 +165,11 @@
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
-      "position": [-940, 165],
-      "id": "a6a0a13f-1234-4413-ba3e-5c5c02c0f292",
+      "position": [
+        -1320,
+        140
+      ],
+      "id": "01059cef-f5ae-47fc-b051-c2c3d05518d5",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -177,8 +198,11 @@
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
-      "position": [-60, 90],
-      "id": "936ec79a-2ab6-42c3-b220-b4315250439d",
+      "position": [
+        -440,
+        60
+      ],
+      "id": "c8449c95-5a3f-4a16-a3c9-9f86f0e7ba8a",
       "name": "Filter"
     },
     {
@@ -218,8 +242,11 @@
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [160, 90],
-      "id": "7dc424bc-c223-4796-8867-adf54b0fb17b",
+      "position": [
+        -220,
+        60
+      ],
+      "id": "3ee18d89-4b7a-4f9b-902e-3da9e1e347b4",
       "name": "Switch"
     }
   ],
@@ -325,11 +352,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f09f7941-16d8-4219-a5b5-543f91357115",
+  "versionId": "44eeb366-e6f1-4d78-a158-df518e46907e",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "R3OQMIUYTI6dbUNZ",
+  "id": "xZDlv3ZFE1h36MYb",
   "tags": []
 }
