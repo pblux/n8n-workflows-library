@@ -55,7 +55,7 @@ Handles human handoff using Chatwoot. When a message is flagged as human-intende
 
 > Requires: **Redis**, **Chatwoot**
 
-![Chatwoot human pause](screenshots/human-pause.png)
+![Human pause](screenshots/human-pause.png)
 
 ---
 
@@ -63,7 +63,7 @@ Handles human handoff using Chatwoot. When a message is flagged as human-intende
 
 Converts audio or video messages into text using OpenAI's transcription tools.
 
-> Requires: **OpenAI API**
+> Requires: **LLM API**
 
 ![Transcribe media](screenshots/transcribe-media.png)
 
@@ -78,15 +78,19 @@ Includes a system message (`system-message.md`) to define how to handle ambiguou
 
 ---
 
-## ⚙️ Requirements
+### 🧑‍🏫 ai-subagent
 
-| Workflow                | Dependencies    |
-| ----------------------- | --------------- |
-| `firewall`              | Redis           |
-| `message-buffer`        | Redis           |
-| `human-pause`           | Redis, Chatwoot |
-| `transcribe-media`      | OpenAI API      |
-| `detect-language-agent` | LLM             |
+A specialized sub-agent that:
+
+- Loads a system message (expert prompt) from a Google Drive document
+- Responds to questions passed from the main agent
+- Focuses on a single **topic/domain** (e.g. refunds, payment methods, technical details)
+
+Use case: The main AI agent delegates questions to this sub-agent when a specific domain expert is needed.
+
+> Requires: **Google Drive access**, LLM API
+
+![AI sub-agent](screenshots/ai-subagent.png)
 
 ---
 

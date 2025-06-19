@@ -1,0 +1,242 @@
+{
+  "name": "ai-subagent",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_message"
+            },
+            {
+              "name": "system_message"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "7f8af55d-13eb-4349-af84-74b69868a4ba",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "destinationKey": "system_messge",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        320,
+        0
+      ],
+      "id": "1fc22098-44b1-41c6-81b3-f7177b83e417",
+      "name": "Extract text from file"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.system_message }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        100,
+        0
+      ],
+      "id": "4f398093-b51c-4488-a3a7-bdcb01a9bd46",
+      "name": "Google Drive",
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "nD9g50zpFVvvLhIz",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When Executed by Another Workflow').item.json.user_message }}",
+        "options": {
+          "systemMessage": "=Today is {{ $json.formatted_date }}\n\n{{ $json.system_message }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        980,
+        0
+      ],
+      "id": "9a85aa1a-5de5-42ca-ba00-c52f57b68740",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "71dad324-e3fb-46c7-a2c4-795b48b67523",
+              "name": "system_message",
+              "value": "={{ $('Extract text from file').item.json.system_messge }}",
+              "type": "string"
+            },
+            {
+              "id": "9997ad16-fddd-4efe-b07b-9020110bb04e",
+              "name": "formatted_date",
+              "value": "={{ $json.formatted_date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        760,
+        0
+      ],
+      "id": "a9c44011-64a6-401a-81ae-f8754ce1b069",
+      "name": "system_message"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "format": "custom",
+        "customFormat": "cccc, d 'de' LLLL 'de' y, 'y la hora es:' tt",
+        "outputFieldName": "formatted_date",
+        "options": {
+          "timezone": true
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        540,
+        0
+      ],
+      "id": "eb34cf91-e999-45ec-8c59-b29e14927435",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1068,
+        220
+      ],
+      "id": "9b07946d-e716-4bf5-b38b-1f63f5679d18",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "5kR9TBzMrLBZLqdr",
+          "name": "DeepSeek account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Extract text from file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract text from file": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "system_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "system_message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 300
+  },
+  "versionId": "2c488094-933b-4667-bb71-4ef407c7a54e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+  },
+  "id": "GF0u55FqaU4bPFAn",
+  "tags": []
+}
