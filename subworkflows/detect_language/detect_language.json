@@ -1,0 +1,93 @@
+{
+  "name": "detect_language",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_message"
+            },
+            {
+              "name": "default_language"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-180, 0],
+      "id": "b47aed77-a5c9-4013-93af-1e7010cc8ee4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_message }}",
+        "options": {
+          "systemMessage": "=Your task is to return the language of the user's message.\n\n## Examples:\n\n**User message:**  \n\"Este es un mensaje en español.\"  \n**You should return:**  \n\"Spanish\"\n\n**User message:**  \n\"This is an English message.\"  \n**You should return:**  \n\"English\"\n\n---\n\n## Special case:\n\n### Special case 1:\n\nIf the message contains a section like:\n\nImage: [image description]\nText: [some user input]\n\n- Only consider the content after **\"Text:\"**.\n- Ignore the language of the image description.\n- If there is **nothing after \"Text:\"**, assume the language is **`{{ $json.default_language }}`**.\n\n### Special case 2:\n\nIf the message contains a section like:\n\nAudio: [audio transcription]\nText: [some user input]\n\n- Only consider the content after **\"Text:\"**.\n- If there is **nothing after \"Text:\"**, considerer the language of the audio transcription.\n\n---\n\n**User message:** `{{ $json.user_message }}`\n\n**Return only the name of the detected language in `{{ $json.default_language }}`**\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [40, 0],
+      "id": "ef0ca1d0-6d72-469f-acf2-1a19b64f785f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [128, 220],
+      "id": "e4bf28ec-1e84-40e2-bf52-49ef03765735",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "5kR9TBzMrLBZLqdr",
+          "name": "DeepSeek account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 300
+  },
+  "versionId": "4525f726-6373-44fd-9690-d246f3440bae",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+  },
+  "id": "jSUlCnPr0KSwTeU4",
+  "tags": []
+}

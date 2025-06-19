@@ -1,0 +1,335 @@
+{
+  "name": "memory_buffer",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "list_array",
+        "key": "={{ $('Flowdata').item.json.flowdata['session_id'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-280, 165],
+      "id": "407e1bde-b09d-4051-bac4-32b68ac56fc6",
+      "name": "Get messages",
+      "credentials": {
+        "redis": {
+          "id": "W8G2Q3WYFq5dOko8",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $json.flowdata.session_id }}",
+        "messageData": "={{ JSON.stringify($json.flowdata) }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-500, 165],
+      "id": "7338ec12-57f4-4577-9269-6655eb423545",
+      "name": "Push messages",
+      "credentials": {
+        "redis": {
+          "id": "W8G2Q3WYFq5dOko8",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [380, 265],
+      "id": "72b1ea03-051e-43c4-8df9-d182c0fe3ad5",
+      "name": "Wait",
+      "webhookId": "6b0be606-3591-4ad8-b9f4-71326030a007"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Flowdata').item.json.flowdata.session_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [380, 40],
+      "id": "8a378d8e-4615-4c34-9083-cf7f9e7fe07a",
+      "name": "Delete messages",
+      "credentials": {
+        "redis": {
+          "id": "W8G2Q3WYFq5dOko8",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7869e360-ec39-487e-9680-24eb9d4f5f91",
+              "name": "flowdata.message_id",
+              "value": "={{ $json.message_id }}",
+              "type": "string"
+            },
+            {
+              "id": "d38a99f3-461c-4a17-9ba4-e8770723d234",
+              "name": "flowdata.session_id",
+              "value": "={{ $json.session_id }}",
+              "type": "string"
+            },
+            {
+              "id": "ec027acc-3bc4-427b-b0f5-fa0b9ff62700",
+              "name": "flowdata.session_input",
+              "value": "={{ $json.session_input }}",
+              "type": "string"
+            },
+            {
+              "id": "a58131b0-edde-463a-83d3-5b1a590a6123",
+              "name": "flowdata.session_timestamp",
+              "value": "={{ $json.session_timestamp }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-720, 165],
+      "id": "82ae341f-4639-465d-a4fb-e92dbc76a0e6",
+      "name": "Flowdata"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5ec9d6a6-e7a2-4c92-854a-16daafc60117",
+              "name": "output",
+              "value": "={{ $json.list_array.map(item => JSON.parse(item).session_input).join('\\n') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [600, 40],
+      "id": "c16c9b5c-c8e4-4a4e-adb8-c43cb5758311",
+      "name": "Join messages"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "message_id",
+              "type": "number"
+            },
+            {
+              "name": "session_id"
+            },
+            {
+              "name": "session_input"
+            },
+            {
+              "name": "session_timestamp"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-940, 165],
+      "id": "a6a0a13f-1234-4413-ba3e-5c5c02c0f292",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4fbc21dc-7879-4474-bb5c-e56216fa05b4",
+              "leftValue": "={{ JSON.parse($json.list_array.first()).message_id }}",
+              "rightValue": "={{ $('Flowdata').item.json.flowdata.message_id }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [-60, 90],
+      "id": "936ec79a-2ab6-42c3-b220-b4315250439d",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dc6b80d6-7348-4b22-b518-d84f899c6e6f",
+                    "leftValue": "={{ JSON.parse($json.list_array.last()).session_timestamp }}",
+                    "rightValue": "={{ $now.minus(20, 'seconds') }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "before"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Continue"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Wait"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [160, 90],
+      "id": "7dc424bc-c223-4796-8867-adf54b0fb17b",
+      "name": "Switch"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get messages": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Push messages": {
+      "main": [
+        [
+          {
+            "node": "Get messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flowdata": {
+      "main": [
+        [
+          {
+            "node": "Push messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete messages": {
+      "main": [
+        [
+          {
+            "node": "Join messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Flowdata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Delete messages",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f09f7941-16d8-4219-a5b5-543f91357115",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+  },
+  "id": "R3OQMIUYTI6dbUNZ",
+  "tags": []
+}

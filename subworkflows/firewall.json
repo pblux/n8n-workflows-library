@@ -1,0 +1,537 @@
+{
+  "name": "firewall",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "human",
+              "type": "boolean"
+            },
+            {
+              "name": "incoming",
+              "type": "boolean"
+            },
+            {
+              "name": "human-temp",
+              "type": "boolean"
+            },
+            {
+              "name": "conversation_id",
+              "type": "number"
+            },
+            {
+              "name": "account_id",
+              "type": "number"
+            },
+            {
+              "name": "message_content"
+            },
+            {
+              "name": "chatwoot_url"
+            },
+            {
+              "name": "message_id",
+              "type": "number"
+            },
+            {
+              "name": "created_at"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-2640, -860],
+      "id": "49f79775-ce82-49d6-8a0c-c36aa1f06a14",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c890b60-be7b-496f-8d22-878ee2f87ad4",
+              "leftValue": "={{ $('Set data').item.json.human }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [-2200, -860],
+      "id": "a7140527-863a-46b7-9970-bd1b0319f94f",
+      "name": "Filter human"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [-1760, -960],
+      "id": "4f79b637-9f17-4d77-83af-306ce8f2fd68",
+      "name": "Main flow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2502a693-3633-4f08-b368-3aff5a229ecb",
+              "leftValue": "={{ $('Set data').item.json.incoming }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "549d6ff9-ed8b-4270-8bb1-40cbb77c309c",
+              "leftValue": "={{ $json['human-temp'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-1980, -860],
+      "id": "938bc3c5-44c7-4722-b7eb-8c685a819d0f",
+      "name": "Incoming false?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fab6c9b2-1c36-4ca3-9ee5-1b2b80736150",
+              "name": "human",
+              "value": "={{ $json.human }}",
+              "type": "boolean"
+            },
+            {
+              "id": "2a94128a-3b7f-433a-80f3-935b0b7fee1a",
+              "name": "admin",
+              "value": "={{ $json.admin }}",
+              "type": "boolean"
+            },
+            {
+              "id": "989eb884-0ac9-46d0-8348-4cf9fa7a10ec",
+              "name": "incoming",
+              "value": "={{ $json.incoming }}",
+              "type": "boolean"
+            },
+            {
+              "id": "db0c03e3-c541-4cd4-a574-332d9a146d41",
+              "name": "human-temp",
+              "value": "={{ $json['human-temp'] }}",
+              "type": "boolean"
+            },
+            {
+              "id": "f28fe6e9-99c5-41ef-bc4d-05c25435198f",
+              "name": "conversation_id",
+              "value": "={{ $json.conversation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1ce78e21-2fb9-4f6d-a959-9490669f55fd",
+              "name": "account_id",
+              "value": "={{ $json.account_id }}",
+              "type": "string"
+            },
+            {
+              "id": "c7ec7dec-1445-42b1-8755-e11ecc5e4fd5",
+              "name": "chatwoot_url",
+              "value": "={{ $json.chatwoot_url }}",
+              "type": "string"
+            },
+            {
+              "id": "84ada914-2328-4f93-a1ea-cd4749ed38b9",
+              "name": "flowdata.message_id",
+              "value": "={{ $json.message_id }}",
+              "type": "number"
+            },
+            {
+              "id": "bb123018-1ceb-4f24-9fbd-35203c4916e5",
+              "name": "flowdata.created_at",
+              "value": "={{ $json.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "e47c119f-2933-4cf1-9d28-a7e701b9e053",
+              "name": "flowdata.message_content",
+              "value": "={{ $json.message_content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-2420, -860],
+      "id": "eea6a193-e2c1-4eef-bffb-8b8c941fbbce",
+      "name": "Set data"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "bot_message",
+        "key": "={{ $('Set data').item.json.account_id +\"_\"}}{{ $('Set data').item.json.conversation_id + \"_bot_message\" }}",
+        "keyType": "list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-1760, -760],
+      "id": "49c32f19-10ac-4b3c-ae9a-137156a19d97",
+      "name": "Get bot message",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2502a693-3633-4f08-b368-3aff5a229ecb",
+              "leftValue": "={{ JSON.parse($json.bot_message.first()) }}",
+              "rightValue": "={{ $('Set data').item.json.flowdata.message_content }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-1540, -760],
+      "id": "35e5d2a0-5753-4d8b-9ce5-55ea421c6381",
+      "name": "Bot message?"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Set data').item.json.account_id +\"_\"}}{{ $('Set data').item.json.conversation_id + \"_bot_message\" }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-1320, -860],
+      "id": "d8fc8413-375d-42b9-931d-bb1c7abb0177",
+      "name": "Delete bot message",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
+              "leftValue": "filter",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [-1100, -860],
+      "id": "514c20c9-43a9-4767-b349-c8be0fef40ec",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "jXK1k08fnvjZIXjG",
+          "mode": "list",
+          "cachedResultName": "Human assignation"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Set data').item.json.conversation_id }}",
+            "account_id": "={{ $('Set data').item.json.account_id }}",
+            "flowdata_message_id": "={{ $('Set data').item.json.flowdata.message_id }}",
+            "flowdata": "={{ $('Set data').item.json.flowdata }}",
+            "chatwoot_url": "={{ $('Set data').item.json.chatwoot_url }}"
+          },
+          "matchingColumns": [
+            "conversation_id",
+            "account_id",
+            "flowdata_message_id",
+            "flowdata",
+            "chatwoot_url"
+          ],
+          "schema": [
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "account_id",
+              "displayName": "account_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "flowdata_message_id",
+              "displayName": "flowdata_message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "flowdata",
+              "displayName": "flowdata",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chatwoot_url",
+              "displayName": "chatwoot_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [-1320, -660],
+      "name": "Call Human assignation",
+      "id": "273c9c68-fef8-40a0-a7d3-8bb511a00680"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
+              "leftValue": "filter",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [-1100, -660],
+      "id": "18213d3b-c52d-49f3-b393-9a887c924db7",
+      "name": "Filter1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter human": {
+      "main": [
+        [
+          {
+            "node": "Incoming false?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incoming false?": {
+      "main": [
+        [
+          {
+            "node": "Main flow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get bot message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set data": {
+      "main": [
+        [
+          {
+            "node": "Filter human",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get bot message": {
+      "main": [
+        [
+          {
+            "node": "Bot message?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bot message?": {
+      "main": [
+        [
+          {
+            "node": "Delete bot message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Human assignation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete bot message": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Human assignation": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 300
+  },
+  "versionId": "f2716b43-0481-405c-8673-b11a63843086",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3dc0444e9facd55476a324d2cf4b7db142c09ed6afd956ef890f79f52a98e0d2"
+  },
+  "id": "pc36GegB0fSbujtt",
+  "tags": []
+}

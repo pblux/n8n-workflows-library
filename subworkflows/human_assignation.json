@@ -1,0 +1,485 @@
+{
+  "name": "human_assignation",
+  "nodes": [
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [440, -360],
+      "id": "3d3f1feb-ee49-4dd1-9e13-a1034851afe3",
+      "name": "Wait 5'",
+      "webhookId": "cc05287a-20ac-4ff4-be58-c10497df0db7"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Start').item.json.account_id +\"_\"}}{{ $('Start').item.json.conversation_id }}",
+        "messageData": "={{ JSON.stringify($('Start').item.json.flowdata) }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-220, -460],
+      "id": "68f6311e-077c-44f3-8e36-cd6fcc59db9c",
+      "name": "Push messages",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "list_array",
+        "key": "={{ $('Start').item.json.account_id +\"_\"}}{{ $('Start').item.json.conversation_id }}",
+        "keyType": "list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [-880, -460],
+      "id": "d5413bbe-d4b1-4d7f-a643-0db97dab2b44",
+      "name": "Get client messages",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dd956404-ede3-43a3-b61f-b696d7b32f41",
+                    "leftValue": "={{ $json.list_array.length }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "First cycle"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [-660, -460],
+      "id": "32004514-81e6-455a-a791-d18399a5209d",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8e0cce2e-5c91-40ab-b822-90660ff75aed",
+                    "leftValue": "={{ JSON.parse($json.list_array.first()).message_id }}",
+                    "rightValue": "={{ $('Start').item.json.flowdata_message_id }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Do nothing"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dc6b80d6-7348-4b22-b518-d84f899c6e6f",
+                    "leftValue": "={{ JSON.parse($json.list_array.last()).created_at }}",
+                    "rightValue": "={{ $now.minus(600, 'seconds') }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "before"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Continue"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Wait"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [220, -560],
+      "id": "9c1c0045-9f94-427d-9522-c83613c73c77",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"labels\": [\"human-temp\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-440, -535],
+      "id": "4039b8fd-6958-47ca-844d-254355b8d32b",
+      "name": "Add \"human-temp\" label",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "kIqqJ5gnOe0hGZmz",
+          "name": "Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Start').item.json.chatwoot_url }}/api/v1/accounts/{{ $('Start').item.json.account_id }}/conversations/{{ $('Start').item.json.conversation_id }}/labels/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"labels\": [\"\"]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -560],
+      "id": "ebb1a713-420f-404a-a74b-2ca4e1027c34",
+      "name": "Delete \"human-temp\" label",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "kIqqJ5gnOe0hGZmz",
+          "name": "Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Start').item.json.account_id +\"_\"}}{{ $('Start').item.json.conversation_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [660, -560],
+      "id": "0fa3157d-e95b-4963-a506-eec691026ab7",
+      "name": "Delete client messages",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "conversation_id",
+              "type": "any"
+            },
+            {
+              "name": "account_id",
+              "type": "any"
+            },
+            {
+              "name": "flowdata_message_id",
+              "type": "any"
+            },
+            {
+              "name": "flowdata",
+              "type": "any"
+            },
+            {
+              "name": "chatwoot_url",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "id": "2e3703a5-3a32-47b0-81ad-a1b9fc724574",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [-1100, -460]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "list_array",
+        "key": "={{ $('Start').item.json.account_id +\"_\"}}{{ $('Start').item.json.conversation_id }}",
+        "keyType": "list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [0, -460],
+      "id": "738a6707-7c67-46b4-bcde-0c19428f5a3b",
+      "name": "Get messages",
+      "credentials": {
+        "redis": {
+          "id": "QaRH4HfWHKlCKgkN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
+              "leftValue": "filter",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [440, -760],
+      "id": "ed375f41-6845-43b0-ad21-76968adb04f9",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace2d184-3bc9-40b5-91df-c96b84275149",
+              "leftValue": "filter",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [880, -560],
+      "id": "33d4ea21-5fb5-4a14-a442-b4f9ae4ef859",
+      "name": "Filter 2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete \"human-temp\" label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 5'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Push messages": {
+      "main": [
+        [
+          {
+            "node": "Get messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5'": {
+      "main": [
+        [
+          {
+            "node": "Get messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add \"human-temp\" label": {
+      "main": [
+        [
+          {
+            "node": "Push messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete \"human-temp\" label": {
+      "main": [
+        [
+          {
+            "node": "Delete client messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get client messages": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Add \"human-temp\" label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Push messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete client messages": {
+      "main": [
+        [
+          {
+            "node": "Filter 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get client messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get messages": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [[]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "911442c7-ec6f-44ce-bdcd-bdfaaf1b7909",
+  "meta": {
+    "instanceId": "3dc0444e9facd55476a324d2cf4b7db142c09ed6afd956ef890f79f52a98e0d2"
+  },
+  "id": "jXK1k08fnvjZIXjG",
+  "tags": []
+}

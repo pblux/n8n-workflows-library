@@ -1,0 +1,378 @@
+{
+  "name": "convert_media_to_text",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "80d8e8e6-5809-4ed7-9e9b-aa3fc62520d1",
+                    "leftValue": "={{ $json.audio }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a3ff7ac1-f0ba-4088-b891-25d18b2a33ab",
+                    "leftValue": "={{ $json.image }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "text"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [-820, 180],
+      "id": "2a9f0892-30f5-41ef-b8e3-7188af50b3ce",
+      "name": "Content type"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-160, -20],
+      "id": "8d522d91-fd77-42d5-b786-9a602d2487a5",
+      "name": "Audio transcriber",
+      "credentials": {
+        "openAiApi": {
+          "id": "E4GWzJ8bXGCGgaiL",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-160, 180],
+      "id": "c038c4c9-ea85-4221-8d98-0d88920321fa",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "E4GWzJ8bXGCGgaiL",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.media_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-600, 80],
+      "id": "32d3344f-ea0c-4617-a68d-b9e58072fb77",
+      "name": "Download attachment"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('When Executed by Another Workflow').item.json.audio }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "c196396f-bd79-4591-b389-76a48a06f992"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "72a18ab6-8d80-4a26-9c6d-fb6f29d5aae2",
+                    "leftValue": "={{ $('When Executed by Another Workflow').item.json.image }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [-380, 80],
+      "id": "2a45e176-0c15-491f-9959-f9512646c6de",
+      "name": "Attachment type"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f77c6a0-d2e5-4522-855f-f0f3d3db6d39",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-600, 280],
+      "id": "418d5289-3999-405f-9957-2fc3d9834a44",
+      "name": "Get text"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f8902392-9dc9-4f23-af29-74f9e323a7da",
+              "name": "text",
+              "value": "=Audio:\n{{ $json.text }}\n\nText:\n{{ $('When Executed by Another Workflow').item.json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [60, -20],
+      "id": "6099248d-65e7-496d-bb9c-8ebe15eadf8e",
+      "name": "Get text from audio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "18e6bbe0-8c2a-409a-b2fa-c07a0f8b90b5",
+              "name": "text",
+              "value": "=Image:\n{{ $json.content }}\n\nText:\n{{ $('When Executed by Another Workflow').item.json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [60, 180],
+      "id": "4269760f-2b0c-45bc-8ca6-28d7852c84aa",
+      "name": "Get text from image"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "audio",
+              "type": "boolean"
+            },
+            {
+              "name": "image",
+              "type": "boolean"
+            },
+            {
+              "name": "media_url"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-1040, 180],
+      "id": "66e057bc-22e7-47ac-a287-aab323fe1b28",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Content type": {
+      "main": [
+        [
+          {
+            "node": "Download attachment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download attachment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio transcriber": {
+      "main": [
+        [
+          {
+            "node": "Get text from audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Get text from image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download attachment": {
+      "main": [
+        [
+          {
+            "node": "Attachment type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attachment type": {
+      "main": [
+        [
+          {
+            "node": "Audio transcriber",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Content type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f1c37fb9-3b17-4b27-972b-59839e2f7d28",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+  },
+  "id": "HkyKOnEp815iVVf0",
+  "tags": []
+}
