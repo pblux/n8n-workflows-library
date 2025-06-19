@@ -15,7 +15,7 @@ Prepares the system message for the main AI agent. Adds:
 - Detected language
 - A configurable base prompt
 
-![System message builder](screenshots/build-system-message.png)
+![System message builder](subworkflows/screenshots/build-system-message.png)
 
 ---
 
@@ -30,7 +30,7 @@ Useful as a **firewall** to stop bot logic when a human agent is in control.
 
 > Requires: **Redis**
 
-![Firewall workflow](screenshots/firewall.png)
+![Firewall workflow](subworkflows/screenshots/firewall.png)
 
 ---
 
@@ -41,7 +41,7 @@ Merges them into one message before triggering the main flow.
 
 > Requires: **Redis**
 
-![Message buffer](screenshots/message-buffer.png)
+![Message buffer](subworkflows/screenshots/message-buffer.png)
 
 ---
 
@@ -55,7 +55,7 @@ Handles human handoff using Chatwoot. When a message is flagged as human-intende
 
 > Requires: **Redis**, **Chatwoot**
 
-![Human pause](screenshots/human-pause.png)
+![Human pause](subworkflows/screenshots/human-pause.png)
 
 ---
 
@@ -65,7 +65,7 @@ Converts audio or video messages into text using OpenAI's transcription tools.
 
 > Requires: **LLM API**
 
-![Transcribe media](screenshots/transcribe-media.png)
+![Transcribe media](subworkflows/screenshots/transcribe-media.png)
 
 ---
 
@@ -74,7 +74,7 @@ Converts audio or video messages into text using OpenAI's transcription tools.
 Detects the user's language for downstream use.  
 Includes a system message (`system-message.md`) to define how to handle ambiguous input.
 
-![Detect language agent](screenshots/detect-language-agent.png)
+![Detect language agent](subworkflows/screenshots/detect-language-agent.png)
 
 ---
 
