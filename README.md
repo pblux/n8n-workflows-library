@@ -5,6 +5,31 @@ This library serves as both a personal toolkit and a portfolio of how I design s
 
 ---
 
+## 🤖 Main AI Agents
+
+These are complete AI assistants, built by combining multiple sub-workflows and tools.  
+They are connected to external platforms (like Chatwoot) and serve as the main logic layer for automating conversations.
+
+---
+
+### 🏢 business-assistant
+
+This is a full AI assistant designed to support small-to-medium businesses via platforms like **Chatwoot**.  
+It integrates several reusable sub-workflows (firewall, memory buffer, human assignment, etc.) and tools (e.g. AI sub-agents).
+
+Key features:
+
+- Handles customer support, FAQs, and product queries
+- Delegates to human agents when needed
+- Loads context from language detection, date, and a shared prompt
+- Modular design: easily adaptable per client
+
+> Requires: Redis, Chatwoot, LLMs
+
+![Business AI Assistant](main-agents/screenshots/business-assistant.png)
+
+---
+
 ## Sub-Workflows
 
 ### 🧠 build-system-message

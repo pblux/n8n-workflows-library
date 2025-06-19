@@ -1,0 +1,971 @@
+{
+  "name": "business-assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1580,
+        80
+      ],
+      "id": "925cdfcd-2ecc-4577-9ebd-731a734733db",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "rsPJz7hiU81aTa8b",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "5a42924e-9b8e-47d1-9de8-5a53eeec809c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -140
+      ],
+      "id": "8aa29460-c046-4b40-a68a-903bc26b563a",
+      "name": "Chatwoot",
+      "webhookId": "5a42924e-9b8e-47d1-9de8-5a53eeec809c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91d10cd7-a44f-42c9-9a76-fdf38e5778ea",
+              "name": "flowdata.url",
+              "value": "https://chatwoot.tuia.lat",
+              "type": "string"
+            },
+            {
+              "id": "8bb15ae9-aaa0-4b2f-bfb5-a277f4dae582",
+              "name": "flowdata.incoming",
+              "value": "={{ $json.body.message_type == \"incoming\" }}",
+              "type": "boolean"
+            },
+            {
+              "id": "e24befd1-922a-42fc-80b4-ad26331ed110",
+              "name": "flowdata.human-temp",
+              "value": "={{ $json.body.conversation.labels.includes(\"human-temp\") }}",
+              "type": "boolean"
+            },
+            {
+              "id": "25093dd1-cee2-47ab-a60b-6d8f8739ca7d",
+              "name": "flowdata.human",
+              "value": "={{ $json.body.conversation.labels.includes(\"pablo\") }}",
+              "type": "boolean"
+            },
+            {
+              "id": "8987c1d9-84f2-477e-84fe-3d161c32cb57",
+              "name": "flowdata.admin",
+              "value": "={{ $json.body.conversation.labels.includes(\"admin\") }}",
+              "type": "boolean"
+            },
+            {
+              "id": "cc94dfe0-140b-4bbe-98fd-b66653c915d6",
+              "name": "flowdata.media",
+              "value": "={{ $json.body.attachments.length > 0 }}",
+              "type": "boolean"
+            },
+            {
+              "id": "43ab7f16-533b-4d5b-a6da-821b7050c8be",
+              "name": "flowdata.image",
+              "value": "={{ $json.body.conversation.messages[0].attachments[0].file_type == \"image\"}}",
+              "type": "boolean"
+            },
+            {
+              "id": "97ac1985-6717-4de7-a658-ecc795d71284",
+              "name": "flowdata.audio",
+              "value": "={{ $json.body.conversation.messages[0].attachments[0].file_type == \"audio\" }}",
+              "type": "boolean"
+            },
+            {
+              "id": "1b2a551e-92e9-4ae5-a943-f496759199b4",
+              "name": "flowdata.account_id",
+              "value": "={{ $json.body.account.id }}",
+              "type": "number"
+            },
+            {
+              "id": "8c10811b-3923-4b22-b868-fec06fa856ed",
+              "name": "flowdata.conversation_id",
+              "value": "={{ $json.body.conversation.messages[0].conversation_id }}",
+              "type": "number"
+            },
+            {
+              "id": "6ef36fd7-bef2-4f0d-a5a7-84b79681d4c2",
+              "name": "flowdata.created_at",
+              "value": "={{ $json.body.conversation.messages[0].created_at.toDateTime('s').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "c2b0e878-3336-4815-8971-bcee6673b0de",
+              "name": "flowdata.message_id",
+              "value": "={{ $json.body.conversation.messages[0].id }}",
+              "type": "number"
+            },
+            {
+              "id": "ca83f9c5-edff-45aa-b924-4365b86aa076",
+              "name": "flowdata.content",
+              "value": "={{ $json.body.conversation.messages[0].content }}",
+              "type": "string"
+            },
+            {
+              "id": "c9065bdc-aa73-4426-962a-f9daf2468871",
+              "name": "flowdata.media_url",
+              "value": "={{ $json.body.conversation.messages[0].attachments[0].data_url }}",
+              "type": "string"
+            },
+            {
+              "id": "fa382860-2e45-4013-a83f-91fb70b9fab7",
+              "name": "flowdata.timestamp",
+              "value": "={{ $json.body.conversation.timestamp.toDateTime('s').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "8303ea5d-cc2b-4e12-9224-858afe4f8aec",
+              "name": "flowdata.phone_number",
+              "value": "={{ $json.body.sender.phone_number }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        -140
+      ],
+      "id": "8f29285d-d868-40c7-a4cc-67a63710d417",
+      "name": "Set data"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set data').item.json.flowdata.url }}/api/v1/accounts/{{ $('Set data').item.json.flowdata.account_id }}/conversations/{{ $('Set data').item.json.flowdata.conversation_id }}/messages/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "private",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2396,
+        -140
+      ],
+      "id": "104e1cb6-ba7b-4c60-a1b5-99d81faa2857",
+      "name": "Send message",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a89hEWXzRSBs7DUC",
+          "name": "Chatwoot - Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Set data').item.json.flowdata.account_id +\"_\"}}{{ $('Set data').item.json.flowdata.conversation_id + \"_bot_message\" }}",
+        "messageData": "={{ JSON.stringify($json.content) }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2616,
+        -140
+      ],
+      "id": "b9e75f7e-e48b-412f-a793-8fae3cb12e75",
+      "name": "Push message",
+      "credentials": {
+        "redis": {
+          "id": "AT4Iqbzd8lEoYu8w",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Set data').item.json.flowdata.conversation_id }}",
+        "tableName": "tu_ia_n8n_chat_histories",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1700,
+        80
+      ],
+      "id": "136ea3f9-d4e1-43a0-aa8c-f7a16fd3413a",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "YK6uFr06cMcF6jq9",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2108,
+        80
+      ],
+      "id": "7136389e-0d42-4d20-8ea4-0102fc030b13",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "rsPJz7hiU81aTa8b",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User message:\n{{ $('message-buffer').item.json.output }}\n\nIA answer:\n{{ $json.output }}",
+        "options": {
+          "systemMessage": "=## ROLE\n\nYou are an invisible intermediary between an AI and a client.\n\n**IMPORTANT:** The client communicates directly with the AI and **must not know** that you are reviewing the responses. Therefore, **never mention** things like \"I reviewed the response,\" \"according to the AI,\" or suggest in any way that you are involved.\n\nYour messages go straight to the client, so you must maintain the **same warm, natural, and human tone** the AI would use.\n\n---\n\n## YOUR TASK\n\nYour job is to review the human message and, **only if necessary**, make minimal corrections to the AI’s response. In all other cases, simply pass the response through unchanged.\n\n---\n\n## IMPORTANT NOTES\n\n- Do **not** explain that the message was reviewed.\n- **Remove** helpful or service-oriented phrases at the end of the AI’s response, such as:\n  - \"Let me know if you need anything else.\"\n  - \"Can I help you with anything else?\"\n  - \"If you ever need advice or information about our services, I'm here to help.\"\n- **Do not remove** emojis.\n- You are an expert at formatting text for WhatsApp without altering its meaning. For example:\n  - Replace `**` with `*`.\n  - Remove the `#` character.\n  - Apply any other formatting that is standard and correct for WhatsApp.\n\n---\n\n## WHEN TO MAKE CHANGES\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2020,
+        -140
+      ],
+      "id": "71f5ff01-c915-4d71-a66c-72949f2966aa",
+      "name": "Refiner"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8dbf19e8-e871-4c1d-9dc2-f1d4f4103841",
+              "leftValue": "={{ $json.flowdata.admin }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        40,
+        -140
+      ],
+      "id": "a3e76bb0-3479-4b7e-8e62-e980d1b00561",
+      "name": "Filter admin",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2f9ad325-43d1-40f3-867b-a1f883cbf221",
+              "leftValue": "={{ $json.flowdata.admin }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        260,
+        -140
+      ],
+      "id": "0d329e37-c791-47ed-82d1-63f12f6f759d",
+      "name": "Filter all except admin",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('message-buffer').item.json.output }}",
+        "options": {
+          "systemMessage": "={{ $json.system_message }}",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1612,
+        -140
+      ],
+      "id": "101511ba-071b-44b6-97ea-937a72912346",
+      "name": "Main agent"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "90JAgf2o1Fb4YUB4",
+          "mode": "list",
+          "cachedResultName": "firewall"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "human": "={{ $json.flowdata.human }}",
+            "incoming": "={{ $json.flowdata.incoming }}",
+            "human-temp": "={{ $json.flowdata['human-temp'] }}",
+            "conversation_id": "={{ $json.flowdata.conversation_id }}",
+            "account_id": "={{ $json.flowdata.account_id }}",
+            "message_id": "={{ $json.flowdata.message_id }}",
+            "message_content": "={{ $json.flowdata.content }}",
+            "chatwoot_url": "={{ $json.flowdata.url }}",
+            "created_at": "={{ $json.flowdata.timestamp }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "human",
+              "displayName": "human",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean"
+            },
+            {
+              "id": "incoming",
+              "displayName": "incoming",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean"
+            },
+            {
+              "id": "human-temp",
+              "displayName": "human-temp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean"
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "account_id",
+              "displayName": "account_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "message_content",
+              "displayName": "message_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "chatwoot_url",
+              "displayName": "chatwoot_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        -140
+      ],
+      "id": "5a8d7825-1831-474a-9d8c-0bd1a5ffe5d3",
+      "name": "firewall"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "95Y7XRxRHfBKKudD",
+          "mode": "list",
+          "cachedResultName": "transcribe-media"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "audio": "={{ $('Set data').item.json.flowdata.audio }}",
+            "image": "={{ $('Set data').item.json.flowdata.image }}",
+            "text": "={{ $('Set data').item.json.flowdata.content }}",
+            "media_url": "={{ $('Set data').item.json.flowdata.media_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "audio",
+              "displayName": "audio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean"
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean"
+            },
+            {
+              "id": "media_url",
+              "displayName": "media_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        -140
+      ],
+      "id": "2d8ab7e7-dd30-48a0-a04e-521ecce6cc21",
+      "name": "transcribe-media"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "xZDlv3ZFE1h36MYb",
+          "mode": "list",
+          "cachedResultName": "message-buffer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Set data').item.json.flowdata.message_id }}",
+            "session_id": "={{ $('Set data').item.json.flowdata.conversation_id.toString() }}",
+            "session_input": "={{ $json.text }}",
+            "session_timestamp": "={{ $('Set data').item.json.flowdata.timestamp.toDateTime() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "session_input",
+              "displayName": "session_input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "session_timestamp",
+              "displayName": "session_timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        920,
+        -140
+      ],
+      "id": "f7094b03-0d0d-4a77-884e-0b2d6dcce1ec",
+      "name": "message-buffer"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "o88GDhdNEmtzg9SY",
+          "mode": "list",
+          "cachedResultName": "build-system-message"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "response-language": "english"
+          },
+          "matchingColumns": [
+            "language"
+          ],
+          "schema": [
+            {
+              "id": "response-language",
+              "displayName": "response-language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "main-prompt",
+              "displayName": "main-prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        -140
+      ],
+      "id": "d3ce7419-05bc-4cc7-b3b1-aab27595b3bd",
+      "name": "build-system-message"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PhtBjmpScsY7YrrN",
+          "mode": "list",
+          "cachedResultName": "detect-language-agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "default_language": "english"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "default_language",
+              "displayName": "default_language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1140,
+        -140
+      ],
+      "id": "08b11f95-9fd8-4100-970c-0d45ddcaf52b",
+      "name": "detect-language-agent"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "kI0ZWzuRYYcbssQ8",
+          "mode": "list",
+          "cachedResultName": "ai-subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
+            "google-doc-id": "11PhKxiZr_C_x2eGlJpM7yceBZoJtm8rA9XgyZWSeOEY"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "google-doc-id",
+              "displayName": "google-doc-id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1820,
+        80
+      ],
+      "id": "11093538-5c1e-4252-98e1-b0b6aead8080",
+      "name": "ai-subagent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Main agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatwoot": {
+      "main": [
+        [
+          {
+            "node": "Set data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set data": {
+      "main": [
+        [
+          {
+            "node": "Filter admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "Push message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Main agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Refiner",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refiner": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter admin": {
+      "main": [
+        [
+          {
+            "node": "Filter all except admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter all except admin": {
+      "main": [
+        [
+          {
+            "node": "firewall",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Main agent": {
+      "main": [
+        [
+          {
+            "node": "Refiner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firewall": {
+      "main": [
+        [
+          {
+            "node": "transcribe-media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transcribe-media": {
+      "main": [
+        [
+          {
+            "node": "message-buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message-buffer": {
+      "main": [
+        [
+          {
+            "node": "detect-language-agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build-system-message": {
+      "main": [
+        [
+          {
+            "node": "Main agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detect-language-agent": {
+      "main": [
+        [
+          {
+            "node": "build-system-message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ai-subagent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Main agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1e7f8de8-9ab1-4d35-aab7-7969774ccc6e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
+  },
+  "id": "a53VfxUWREOOuDTr",
+  "tags": []
+}
