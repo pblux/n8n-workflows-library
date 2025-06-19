@@ -1,0 +1,133 @@
+{
+  "name": "expert-resolver-v1",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            },
+            {
+              "name": "system-message"
+            },
+            {
+              "name": "google-doc-id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "b5a7ef35-a15b-4b46-ace1-7abfac1b3d3c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When Executed by Another Workflow').item.json.query }}",
+        "options": {
+          "systemMessage": "={{ $('When Executed by Another Workflow').item.json.system-message }}\n\nAlways use your \"data\" tool to answer"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        560,
+        0
+      ],
+      "id": "2fb8e74a-e37c-4ce2-a360-754e34c9ec6c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        588,
+        220
+      ],
+      "id": "a54a0026-8091-4328-a3d8-ce77f00c9f18",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "zrmkVz9OjTv7XBQk",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json['google-doc-id'] }}"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        708,
+        220
+      ],
+      "id": "b2ba34ed-74d5-408d-890d-fefa1a33b8f5",
+      "name": "data",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "I8uPOD0tuHDcKmPd",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9c551c17-736f-4aab-a6ed-b0bd49bf137a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
+  },
+  "id": "kI0ZWzuRYYcbssQ8",
+  "tags": []
+}

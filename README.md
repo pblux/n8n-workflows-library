@@ -74,7 +74,7 @@ Merges them into one message before triggering the main flow.
 
 Handles human handoff using Chatwoot. When a message is flagged as human-intended:
 
-- Tags the conversation with `human-temp`
+- Tags the conversation with `human-pause`
 - Pauses bot interaction for 15 minutes
 - Resumes once the tag is removed
 
@@ -109,10 +109,10 @@ They’re embedded in tool definitions, and help the main agent delegate tasks i
 
 ---
 
-### 🧑‍🏫 ai-subagent-google-doc
+### 🧑‍🏫 expert-resolver
 
 A specialized sub-agent (tool) used by the main AI agent to answer questions about a specific topic.  
-The tool builds its system message using a document stored in **Google Drive**.
+The tool builds its system message using a **Google Docs** document.
 
 Key features:
 
@@ -120,9 +120,9 @@ Key features:
 - The prompt is fully sourced from a shared Google Doc
 - Ideal for FAQs, technical instructions, or policies managed by the client
 
-> Requires: **Google Drive API access**, **LLM API**
+> Requires: **Google Docs API access**, **LLM API**
 
-![AI sub-agent Google Doc](agent-tools/screenshots/ai-subagent-google-doc.png)
+![AI sub-agent Google Doc](agent-tools/screenshots/expert-resolver.png)
 
 ---
 
