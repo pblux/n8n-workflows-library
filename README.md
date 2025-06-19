@@ -88,7 +88,7 @@ A specialized sub-agent that:
 
 Use case: The main AI agent delegates questions to this sub-agent when a specific domain expert is needed.
 
-> Requires: **Google Drive access**, LLM API
+> Requires: **Google Drive access**, **LLM API**
 
 ![AI sub-agent](screenshots/ai-subagent.png)
 

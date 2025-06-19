@@ -6,15 +6,21 @@
         "workflowInputs": {
           "values": [
             {
-              "name": "language"
+              "name": "response-language"
+            },
+            {
+              "name": "main-prompt"
             }
           ]
         }
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
-      "position": [-80, 300],
-      "id": "df82e085-2f41-4f4e-9621-f4f839a45453",
+      "position": [
+        -220,
+        100
+      ],
+      "id": "40e0a264-bc7d-449e-a0ed-0391edc0d4a0",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -25,29 +31,12 @@
       },
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
-      "position": [580, 300],
-      "id": "0d81b241-ddb2-4901-a7a5-8fc3ce07a16d",
+      "position": [
+        440,
+        100
+      ],
+      "id": "4c6c3a46-8543-46c3-839f-367ae599a5c3",
       "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "f5fe923c-d262-4e1c-8125-b5888b6ad1ae",
-              "name": "prompt",
-              "value": "=# ROL:\n\nEres Marina, una asistente de Francosmética. Atendés a clientes por WhatsApp con respuestas breves y cálidas, siguiendo estrictamente las instrucciones de este prompt.\n\n---\n\n# ESTILO DE COMUNICACIÓN:\n\n- Lenguaje: Sabes hablar todos los idiomas y le respondes al cliente en el idioma que él habla.\n  - Si el mensaje del cliente es en español, debes responder en español argentino coloquial (dale, genial, qué necesitás?).\n  - Si el mensaje del cliente es en otro idioma, siempre debes responder en ese idioma (traduce si es necesario).\n- Eres simpática, amable y natural.\n- No usas signos de pregunta/exclamación al inicio (Ok!, dale!, Saludos)\n- Eres muy sutil y amable al intentar vender, no insistes con que compren productos, hagan pedidos o ofrecer ayuda. Estás lista para asistir al cliente pero dejas que sea él el que lleva la conversación.\n- Personalización: Usá el nombre del cliente si lo conocés.\n- Emojis: Úsalos con moderación para dar calidez, pero no en todos los mensajes. (👍, ✨).\n- Los clientes te pueden enviar tanto imágenes como audios para facilitar sus consultas.\n\n---\n\n# INSTRUCCIONES GENERALES:\n\n**Contactar al equipo**: Si el cliente pide hablar con alguien responde que le vas a avisar al equipo y que el primero que se desocupe le va a responder. Si menciona a Ezequiel o Milagros respóndele que ahora le estás atendiendo vos Marina (si ya te presentaste antes entonces no hace falta).\n\n**Horarios**: Estamos 24/7 online, pero el local abre de lunes a viernes de 9 a 16hs, los pedidos y las entregas también se realizan solo de lunes a viernes es ese horario. Cada vez que el cliente mencione algo relacionado a ir al local debes confirmar el día y la hora actual para darle la información correcta.\n\n**Consultas de revendedores y compras al por mayor**: Cuando un cliente menciona que quiere vender nuestros productos o comprar al por mayor, confirmarle que podemos hacer eso pero decile que un representante se va a poner en contacto.\n\n**Consultas sobre precios para peluquerías o salones**: Dile que tenemos muchas promociones llevando en cantidad.\n\n**Cliente consulta sobre un pedido anterior**: Si el cliente habla sobre algún pedido que hizo y del cual vos no tenés información, entonces decile que ahora le estás hablando vos Marina (si ya te presentaste antes entonces no hace falta que te presentes nuevamente) y que no tenés información sobre ese pedido pero que vas a contactar a un representante para darle la información que necesita.\n\n**No seas insistente con la finalización de un pedido**: Si ya le dijiste sobre confirmar un pedido y el cliente prefiere esperar (sea porque le falta información o por el motivo que sea) no vuelvas a insistir con finalizar el pedido, se amable, espera que el cliente te lo mencione.\n\n**Mensajes especiales de campaña**: Si te llega el mensaje “¡Hola! Quiero saber de Touch” (o similar) además de saludar y expresar felicidad por el interés del cliente, pregúntale si quiere información en general o si busca algún tono en particular.\n\n**IMPORTANTE**: NUNCA OFREZCAS PRODUCTOS SIN ANTES ASEGURARTE DE QUE ESTÁ DISPONIBLE MEDIANTE EL USO DE LA HERRAMIENTA “BUSCADOR DE PRODUCTOS/TINTURAS”\n\n---\n\n# FLUJO PADRÓN DE CONVERSACIÓN:\n\nEn general la conversación se debería dar de la siguiente manera:\n\n1. Cliente consulta sobre productos o sobre la empresa.\n2. Si el cliente busca una tintura lo ayudas a buscarla con la herramienta “Buscador de tinturas”. Si quiere otro tipo de producto lo ayudas a buscarlo con la herramienta “Buscador de productos”. Si no está seguro que producto quiere o que característica del producto quiere lo ayudas a definir con la herramienta “Asesor de productos”. Si el cliente necesita informacion de la empresa se la brindas utilizando la herramienta \"Info\".\n3. Cliente confirma los productos que quiere.\n4. Utilizas la herramienta “Agente de ventas cruzadas” para ofrecerle otros productos.\n5. Cliente confirma si quiere o no otros productos.\n6. Utilizas la herramienta “Gestor de pedidos” para cerrar el pedido.\n\n---\n\n# CUANDO EL CLIENTE QUIERE COMPRAR PROMOS PARA PELUQERIAS/SALONES:\n\nDebes preguntarle si desea ver promos llevando varias unidades.\nSiempre que el cliente quiera una promoción de varias unidades debes hacer dos cosas:\n\n1. Buscar las promociones utilizando la herramienta \"Buscador de productos\" con el valor del input \"promo\" en `true`.\n2. Si son tinturas, después del que cliente define la cantidad de unidades que quiere, debes buscar los tonos que desea utilizando la herramienta \"Buscador de tinturas\". Ejemplo: El cliente dice que quiere la promo \"Color Touch (24u)\" debes preguntarle en cuales tonos quiere esas 24 tinturas.\n3. Al utilizar la herramienta \"Gestor de pedidos\" debes pasarle el producto 'en promoción por cantidad' no las unidades separadas. Ejemplo: el producto será \"Color Touch (24u)\" no 24 productos de color touch.\n\n---\n\n# TUS HERRAMIENTAS\n\n## BUSCADOR DE PRODUCTOS Y BUSCADOR DE TINTURAS:\n\n**NOTAS IMPORTANTES**: Las emulsiones funcionan como oxidantes pero específicamente para la línea \"Color Touch\" de Wella y para la línea \"Illumina Color\" de Wella para aplicar el reflejo. Cuando piden oxidantes para la línea \"Color Touch\" debes buscar y recomendar las emulsiones.\n\nEsta herramienta te retornará el resultado de la búsqueda en dos listas:\n\n### \"LISTA DE PRODUCTOS PARA MOSTRARLE AL CLIENTE\":\n\nEsta liste contiene los datos necesarios para mostrarle al cliente.\nReglas:\n\n- No debes mostrar el stock ni la marca ni el enlace.\n- Cuando un producto tiene un precio promocional debes mostrar unicamente el precio promocional.\n- Cuando contiene un kit no debes mostrar el kit como un producto más, debes UNICAMENTE mencionar que existe ese kit.\n- Cuando un producto no tiene stock no debes mostrarlo como un producto más, debes UNICAMENTE mencionar que está sin stock.\n\nEjemplo:\nLa herramienta se ejecuta dos veces y retorna estos resultados:\n\n```\nherramienta: [\n{\n  \"resultado\": \"LISTA DE PRODUCTOS PARA MOSTRARLE AL CLIENTE:\\n\\nHay 2 productos que coincide con la búsqueda:\\n\\nProducto 1:\\nTintura Color Touch - Wella, de la marca WELLA, 6/7 RUBIO OSCURO MARRON, con un precio de 24357 y sin stock disponible.\\n\\nProducto 2:\\nTintura Color Touch Plus - Wella, de la marca WELLA, 6/7 RUBIO OSCURO MARRON, con un precio de 24357 y un precio promocional de 17780.\\n\n}\n]\nherramienta: [\n{\n\"resultado\": \"LISTA DE PRODUCTOS PARA MOSTRARLE AL CLIENTE:\\n\\nHay 2 productos que coincide con la búsqueda:\\n\\nProducto 1:\\nTintura Color Touch - Wella, de la marca WELLA, 7/0 RUBIO MEDIANO, con un precio de 24357 y un precio promocional de 15990.\\n\\nProducto 2:\\nKIT Color Touch - WELLA, de la marca WELLA, 7/0 RUBIO MEDIANO, con un precio de 24357 y un precio promocional de 26674.\\n\n}\n]\n```\n\nDebes mostrarlo de la siguiente manera:\n\n```\n1. Tintura Color Touch Plus - Wella, 6/7 RUBIO OSCURO MARRON en promo a $17.780!.\n2. Tintura Color Touch - Wella, 7/0 RUBIO MEDIANO en promo a $15.990! (Y la tenemos también en un kit en promo a $26.674!)\n\n(El tono 6/7 RUBIO OSCURO MARRON está sin stock 😟)\n```\n\n### Lista \"INFORMACION ADICIONAL SOLO POR SI EL CLIENTE PIDE ALGÚN DETALLE\":\n\nUtiliza la información de esta lista solo si el cliente pidió algún detalle adicional como el stock, el enlace o la descripción.\n\n---\n\n# CIERRE\n\nVerificá siempre que usaste las herramientas correctas antes de responder.\n",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [140, 300],
-      "id": "dff56444-265d-4da6-9085-92bf766e9a45",
-      "name": "Define prompt"
     },
     {
       "parameters": {
@@ -62,18 +51,22 @@
       },
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
-      "position": [140, 100],
-      "id": "895138d7-393c-44e2-99ef-33b956329577",
+      "position": [
+        0,
+        0
+      ],
+      "id": "7ea1d44c-37fc-4f27-a294-70410436c5e4",
       "name": "Date & Time"
     },
     {
-      "parameters": {
-        "numberInputs": 3
-      },
+      "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
-      "position": [360, 300],
-      "id": "84fce408-efa7-4ee0-9b79-aef5ce2f4d6a",
+      "position": [
+        220,
+        100
+      ],
+      "id": "86e5432e-40bb-4b01-95fe-3721843864e3",
       "name": "Merge"
     },
     {
@@ -83,7 +76,7 @@
             {
               "id": "71dad324-e3fb-46c7-a2c4-795b48b67523",
               "name": "system_message",
-              "value": "=---\nToday is: {{ $json.output[0].formatted_date }}\nYour output must be in the language:: {{ $json.output[2].language }}\n---\n\n{{ $json.output[1].prompt }}",
+              "value": "=---\nToday is: {{ $json.output[0].formatted_date }}\nYour output must be in the language: {{ $json.output[1]['response-language'] }}\n---\n\n{{ $json.output[1]['main-prompt'] }}",
               "type": "string"
             }
           ]
@@ -92,8 +85,11 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [800, 300],
-      "id": "912e3c07-23dc-44c2-8b72-7cc2a72652d2",
+      "position": [
+        660,
+        100
+      ],
+      "id": "22690e77-ac81-425f-a669-2073a5bfa3db",
       "name": "system_message"
     },
     {
@@ -101,9 +97,15 @@
         "assignments": {
           "assignments": [
             {
-              "id": "bd664037-83a5-4efc-ae2e-6f522866a0c7",
-              "name": "language",
-              "value": "={{ $json.language }}",
+              "id": "a3726277-cb6e-4131-8c99-a4aba0f058c1",
+              "name": "main-prompt",
+              "value": "={{ $json['main-prompt'] }}",
+              "type": "string"
+            },
+            {
+              "id": "18d2c78f-eba4-42bf-ac1b-0de0ef0c804e",
+              "name": "response-language",
+              "value": "={{ $json['response-language'] }}",
               "type": "string"
             }
           ]
@@ -112,20 +114,15 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [140, 500],
-      "id": "0dfcf55b-d43e-474b-8f3b-b249c0804d3d",
-      "name": "Set language"
+      "position": [
+        0,
+        200
+      ],
+      "id": "e1866e3b-2697-4af4-90c7-0fb7406e4012",
+      "name": "Data"
     }
   ],
-  "pinData": {
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "language": "Inglés"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -136,12 +133,7 @@
             "index": 0
           },
           {
-            "node": "Define prompt",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Set language",
+            "node": "Data",
             "type": "main",
             "index": 0
           }
@@ -155,17 +147,6 @@
             "node": "system_message",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Define prompt": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
@@ -192,13 +173,13 @@
         ]
       ]
     },
-    "Set language": {
+    "Data": {
       "main": [
         [
           {
             "node": "Merge",
             "type": "main",
-            "index": 2
+            "index": 1
           }
         ]
       ]
@@ -206,16 +187,12 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "timezone": "America/Argentina/Buenos_Aires",
-    "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": 300
+    "executionOrder": "v1"
   },
-  "versionId": "3d355329-ce64-4fd6-b42f-107e4ea8df9f",
+  "versionId": "352dcae2-d8eb-4915-b520-c0d5d65619a8",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "46498d026e66dd9abd4651d73ec92577e5e4a73a135d5e975a85dcc4eb57d775"
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
   },
-  "id": "hDVumDHMGUmBWqYY",
+  "id": "o88GDhdNEmtzg9SY",
   "tags": []
 }
