@@ -1,13 +1,11 @@
-# 🧩 n8n Sub-Workflows Library
+# n8n Sub-Workflows Library
 
 A curated collection of reusable **n8n sub-workflows** I use to build modular, AI-enabled automations.  
 This library serves as both a personal toolkit and a portfolio of how I design scalable automation logic.
 
 ---
 
-## 📂 Sub-Workflows
-
----
+## Sub-Workflows
 
 ### 🧠 build-system-message
 
@@ -17,7 +15,6 @@ Prepares the system message for the main AI agent. Adds:
 - Detected language
 - A configurable base prompt
 
-📸  
 ![System message builder](screenshots/build-system-message.png)
 
 ---
@@ -31,9 +28,8 @@ Filters messages that:
 
 Useful as a **firewall** to stop bot logic when a human agent is in control.
 
-> 🧩 Requires: **Redis**
+> Requires: **Redis**
 
-📸  
 ![Firewall workflow](screenshots/firewall.png)
 
 ---
@@ -43,9 +39,8 @@ Useful as a **firewall** to stop bot logic when a human agent is in control.
 Buffers user input to wait for several partial messages.
 Merges them into one message before triggering the main flow.
 
-> 🧩 Requires: **Redis**
+> Requires: **Redis**
 
-📸  
 ![Message buffer](screenshots/message-buffer.png)
 
 ---
@@ -58,10 +53,9 @@ Handles human handoff using Chatwoot. When a message is flagged as human-intende
 - Pauses bot interaction for 15 minutes
 - Resumes once the tag is removed
 
-> 🧩 Requires: **Redis**, **Chatwoot**
+> Requires: **Redis**, **Chatwoot**
 
-📸  
-![Chatwoot human pause](screenshots/chatwoot-human-pause.png)
+![Chatwoot human pause](screenshots/human-pause.png)
 
 ---
 
@@ -69,9 +63,8 @@ Handles human handoff using Chatwoot. When a message is flagged as human-intende
 
 Converts audio or video messages into text using OpenAI's transcription tools.
 
-> 🧩 Requires: **OpenAI API**
+> Requires: **OpenAI API**
 
-📸  
 ![Transcribe media](screenshots/transcribe-media.png)
 
 ---
@@ -79,9 +72,8 @@ Converts audio or video messages into text using OpenAI's transcription tools.
 ### 🌍 detect-language-agent
 
 Detects the user's language for downstream use.  
-Includes a system message (`system-message.md`) to define tone, language options, or how to handle ambiguous input.
+Includes a system message (`system-message.md`) to define how to handle ambiguous input.
 
-📸  
 ![Detect language agent](screenshots/detect-language-agent.png)
 
 ---
@@ -112,19 +104,9 @@ To import and use:
 
 ---
 
-## 💡 About Me
+## 🙋‍♂️ About Me
 
 I use n8n to build AI-driven automations, mostly around chatbots, customer service, and human-agent coordination (via Chatwoot, WhatsApp, OpenAI, etc).
 This repo helps me reuse and share the logic I use the most.
 
 Feel free to explore, adapt, and reach out if you'd like to collaborate.
-
----
-
-## 📜 License
-
-MIT — use freely, credit appreciated.
-
-```
-
-```
