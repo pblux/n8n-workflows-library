@@ -78,19 +78,27 @@ Includes a system message (`system-message.md`) to define how to handle ambiguou
 
 ---
 
-### 🧑‍🏫 ai-subagent
+## 🛠 Agent Tools
 
-A specialized sub-agent that:
+These are tools used **within AI agents**, not standalone workflows.  
+They’re embedded in tool definitions, and help the main agent delegate tasks intelligently.
 
-- Loads a system message (expert prompt) from a Google Drive document
-- Responds to questions passed from the main agent
-- Focuses on a single **topic/domain** (e.g. refunds, payment methods, technical details)
+---
 
-Use case: The main AI agent delegates questions to this sub-agent when a specific domain expert is needed.
+### 🧑‍🏫 ai-subagent-google-doc
 
-> Requires: **Google Drive access**, **LLM API**
+A specialized sub-agent (tool) used by the main AI agent to answer questions about a specific topic.  
+The tool builds its system message using a document stored in **Google Drive**.
 
-![AI sub-agent](screenshots/ai-subagent.png)
+Key features:
+
+- The main agent calls it when a topic-specific question is detected
+- The prompt is fully sourced from a shared Google Doc
+- Ideal for FAQs, technical instructions, or policies managed by the client
+
+> Requires: **Google Drive API access**, **LLM API**
+
+![AI sub-agent Google Doc](agent-tools/screenshot/ai-subagent-google-doc.png)
 
 ---
 
