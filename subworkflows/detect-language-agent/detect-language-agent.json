@@ -1,5 +1,5 @@
 {
-  "name": "detect_language",
+  "name": "detect-language-agent",
   "nodes": [
     {
       "parameters": {

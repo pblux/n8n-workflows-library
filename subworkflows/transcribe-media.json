@@ -1,5 +1,5 @@
 {
-  "name": "convert_media_to_text",
+  "name": "transcribe-media",
   "nodes": [
     {
       "parameters": {

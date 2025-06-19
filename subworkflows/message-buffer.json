@@ -1,5 +1,5 @@
 {
-  "name": "memory_buffer",
+  "name": "message-buffer",
   "nodes": [
     {
       "parameters": {
