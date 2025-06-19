@@ -1,4 +1,4 @@
-# n8n Sub-Workflows Library
+# n8n Workflows Library
 
 A curated collection of reusable **n8n sub-workflows** I use to build modular, AI-enabled automations.  
 This library serves as both a personal toolkit and a portfolio of how I design scalable automation logic.
@@ -98,7 +98,7 @@ Key features:
 
 > Requires: **Google Drive API access**, **LLM API**
 
-![AI sub-agent Google Doc](agent-tools/screenshot/ai-subagent-google-doc.png)
+![AI sub-agent Google Doc](agent-tools/screenshots/ai-subagent-google-doc.png)
 
 ---
 
