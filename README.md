@@ -102,6 +102,16 @@ Detects the user's language for downstream use.
 
 ---
 
+### 🗓️ calendar-operations
+
+Internal workflow responsible for executing calendar operations in Google Calendar. It checks availability, creates events, cancels appointments, and suggests alternatives when needed. It does not interact with users directly and only responds to structured queries from the main agent.
+
+> Requires: **Google Calendar**, **LLM API**
+
+![Calendar operations](screenshots/calendar-operations.png)
+
+---
+
 ## 🛠 Agent Tools
 
 These are tools used **within AI agents**, not standalone workflows.  
@@ -126,17 +136,13 @@ Key features:
 
 ---
 
-## 🚀 How to Use
+### 🤖 scheduling-agent
 
-These are **sub-workflows**, designed to be used with the **Execute Workflow** node inside larger n8n workflows.
+Main workflow that manages user appointment requests. It processes natural language inputs, detects scheduling intents (create, modify, or cancel), and delegates calendar actions to the internal calendar-operations tool.
 
-To import and use:
+> Requires: **Google Calendar**, **LLM API**
 
-1. Download the `.json` file
-2. Go to **Workflows > Import** in your n8n instance
-3. In your main workflow, use an **Execute Workflow** node to call the sub-workflow as a module
-
-> Use tags or naming conventions in n8n to track which main workflows use which sub-modules.
+![Scheduling agent](screenshots/scheduling-agent.png)
 
 ---
 

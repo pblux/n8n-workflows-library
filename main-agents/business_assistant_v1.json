@@ -179,7 +179,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2396,
+        2516,
         -140
       ],
       "id": "104e1cb6-ba7b-4c60-a1b5-99d81faa2857",
@@ -201,7 +201,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        2616,
+        2736,
         -140
       ],
       "id": "b9e75f7e-e48b-412f-a793-8fae3cb12e75",
@@ -237,30 +237,6 @@
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4o-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        2108,
-        80
-      ],
-      "id": "7136389e-0d42-4d20-8ea4-0102fc030b13",
-      "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "rsPJz7hiU81aTa8b",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "=User message:\n{{ $('message-buffer-v1').item.json.output }}\n\nAI response:\n{{ $json.output }}",
         "options": {
@@ -270,7 +246,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        2020,
+        2140,
         -140
       ],
       "id": "71f5ff01-c915-4d71-a66c-72949f2966aa",
@@ -358,7 +334,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.8,
       "position": [
-        1612,
+        1672,
         -140
       ],
       "id": "101511ba-071b-44b6-97ea-937a72912346",
@@ -688,7 +664,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "response-language": "={{ $json.output }}",
-            "main-prompt": "=# ROLE\n\nYou are the main AI agent responsible for understanding user requests and delivering helpful, accurate responses.\n\n# TOOLS\n\nYou have access to various connected tools, including sub-agents with domain expertise, document retrieval systems, and APIs.\n\n# TASK\n\nInterpret the user's message, determine if a tool is needed, delegate as required, and synthesize a clear and user-friendly response.\n\n# GUIDELINES\n\n- Always prioritize accuracy and helpfulness.\n- Use connected tools when relevant instead of guessing.\n- Do not expose tool names, logic, or internal structure to the user.\n- Keep the tone informative and aligned with the user's query.\n"
+            "main-prompt": "=# ROLE\n\nYou are the main AI agent responsible for understanding user requests and delivering helpful, accurate responses.\n\n# TOOLS\n\nYou have access to various connected tools, including sub-agents with domain expertise, document retrieval systems, and APIs.\n\n# TASK\n\nInterpret the user's message, determine if a tool is needed, delegate as required, and synthesize a clear and user-friendly response.\n\n## Scheduling Instructions\n\nYou are responsible for helping the user manage their appointments (create, reschedule, or cancel) using the connected tool `scheduling-agent`. When the user expresses an intent related to appointments, extract their request and convert it into a clear natural language command (`query`) to send to the tool.\n\nDo not attempt to access the calendar yourself. Always use the `scheduling-agent` tool to perform any scheduling actions.\n\n# GUIDELINES\n\n- Always prioritize accuracy and helpfulness.\n- Use connected tools when relevant instead of guessing.\n- Do not expose tool names, logic, or internal structure to the user.\n- Keep the tone informative and aligned with the user's query.\n"
           },
           "matchingColumns": [
             "language"
@@ -789,6 +765,124 @@
       ],
       "id": "11093538-5c1e-4252-98e1-b0b6aead8080",
       "name": "expert-resolver-v1"
+    },
+    {
+      "parameters": {
+        "description": "=Use this tool to manage appointments in Google Calendar on behalf of the client. It supports creating, rescheduling, and cancelling events. The tool receives natural language queries and does **not** interact directly with the client. It checks availability and responds with a success message, an error, or alternative time suggestions based on allowed scheduling rules.\n\nThis tool should be invoked only when the user expresses a clear scheduling intent.\n\n## Inputs\n\n- `client_name` (string): The full name of the client.\n- `query` (string): A natural language instruction describing the scheduling request.\n\n---\n\n## Query Examples\n\n### Schedule Appointment\n\n- `Schedule a haircut for Tuesday, June 17 at 4:00 PM`\n- `Book a consultation on Thursday at 10 AM`\n\n### Reschedule Appointment\n\n- `Reschedule my appointment to Wednesday, June 18 at 3:00 PM`\n- `Move my appointment to Friday morning`\n\n### Cancel Appointment\n\n- `Cancel my appointment on June 17`\n- `I need to cancel my haircut booking`\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "PKkA7XvNjOHsVVJP",
+          "mode": "list",
+          "cachedResultName": "scheduling-agent-v1"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "client_id": "={{ $('Set data').item.json.flowdata.conversation_id }}",
+            "calendar_id": "a6095004e44b37b27cfaee60ae419c4f040772c07df5954a6584a68301816d1e@group.calendar.google.com",
+            "supabase_table_name": "tu_ia_agenda",
+            "client_phone_number": "={{ $('Set data').item.json.flowdata.phone_number }}",
+            "client_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_name', ``, 'string') }}",
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
+            "allowed_times_and_days": "Lunes a viernes de 7hs a 15hs."
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "calendar_id",
+              "displayName": "calendar_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "supabase_table_name",
+              "displayName": "supabase_table_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "client_phone_number",
+              "displayName": "client_phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "client_id",
+              "displayName": "client_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "client_name",
+              "displayName": "client_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "allowed_times_and_days",
+              "displayName": "allowed_times_and_days",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1940,
+        80
+      ],
+      "id": "1b4162c3-bb20-4b9c-8e2d-0f8fb6291595",
+      "name": "scheduling-agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        2228,
+        80
+      ],
+      "id": "c7e6a2e1-d0d6-4bb6-8b1f-1615246e7564",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "zrmkVz9OjTv7XBQk",
+          "name": "DeepSeek account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -843,17 +937,6 @@
           {
             "node": "Main agent",
             "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Refiner",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -968,13 +1051,38 @@
           }
         ]
       ]
+    },
+    "scheduling-agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Main agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Refiner",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 300
   },
-  "versionId": "65946f7b-f0dc-42ff-9ace-2b2826c78135",
+  "versionId": "d0215ce8-435b-48f0-bd54-07d5c0e4c9ee",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"

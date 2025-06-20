@@ -1,0 +1,842 @@
+{
+  "name": "calendar_operations_v1",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "calendar_id"
+            },
+            {
+              "name": "operation_type"
+            },
+            {
+              "name": "supabase_table_name"
+            },
+            {
+              "name": "event_id"
+            },
+            {
+              "name": "client_id",
+              "type": "number"
+            },
+            {
+              "name": "client_phone"
+            },
+            {
+              "name": "client_name"
+            },
+            {
+              "name": "event_start"
+            },
+            {
+              "name": "event_end"
+            },
+            {
+              "name": "service"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1700,
+        -120
+      ],
+      "id": "8de7b8fe-dcd0-4695-aeb1-df2565f035fc",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a900070-1360-4115-a464-965af9ff6800",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -820,
+        -520
+      ],
+      "id": "6f874e38-da22-4b03-8e98-e018d0b306ed",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.operation_type }}",
+                    "rightValue": "create_event",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fc3baad0-0f98-4b30-8965-8244d4af86d1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Create"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "420e3872-61f6-44ed-9b37-94003b3fb728",
+                    "leftValue": "={{ $json.operation_type }}",
+                    "rightValue": "delete_event",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Delete"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a5250dde-07d4-42be-83aa-c6fdb5dc99e4",
+                    "leftValue": "={{ $json.operation_type }}",
+                    "rightValue": "get_events",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Get events"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0709d35f-6ef4-40c6-aa6d-973832e2f441",
+                    "leftValue": "={{ $json.operation_type }}",
+                    "rightValue": "get_availability",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Get availability"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1260,
+        -140
+      ],
+      "id": "aaee0546-48eb-4541-a029-039246bbc4b6",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b2a4b9e5-5bc7-46c4-b4b4-704d8b40e0d2",
+              "name": "calendar_id",
+              "value": "={{ $json.calendar_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7f85d574-8b08-41f9-a6f6-5b61a54d530b",
+              "name": "operation_type",
+              "value": "={{ $json.operation_type }}",
+              "type": "string"
+            },
+            {
+              "id": "c7977165-2df0-4750-b0ab-3c4dbe7f696b",
+              "name": "supabase_table_name",
+              "value": "={{ $json.supabase_table_name }}",
+              "type": "string"
+            },
+            {
+              "id": "efaf4e1b-3e88-4664-bcaa-9c00176b9297",
+              "name": "event_id",
+              "value": "={{ $json.event_id }}",
+              "type": "string"
+            },
+            {
+              "id": "83ede5e1-5649-4fd8-a187-1bb51dbba476",
+              "name": "client_id",
+              "value": "={{ $json.client_id }}",
+              "type": "number"
+            },
+            {
+              "id": "da1e4dc3-c00b-4031-a12b-00b978143e0b",
+              "name": "client_phone",
+              "value": "={{ $json.client_id }}",
+              "type": "number"
+            },
+            {
+              "id": "9f8209da-e4c5-4af8-8ea5-3c244b3fdb68",
+              "name": "client_name",
+              "value": "={{ $json.client_name }}",
+              "type": "string"
+            },
+            {
+              "id": "c0eb37b4-26f3-4006-a66c-9b6ce6968fb2",
+              "name": "event_start",
+              "value": "={{ $json.event_start }}",
+              "type": "string"
+            },
+            {
+              "id": "05bf1ee5-cfb3-4cd4-a894-9e71c1505380",
+              "name": "event_end",
+              "value": "={{ $json.event_end }}",
+              "type": "string"
+            },
+            {
+              "id": "b4963272-dfe7-42c2-9237-dde54231df4c",
+              "name": "service",
+              "value": "={{ $json.service }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1480,
+        -120
+      ],
+      "id": "ce830f8e-372e-4b90-bb42-18647157c6e0",
+      "name": "Set data"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $('Set data').item.json.calendar_id }}",
+          "mode": "id"
+        },
+        "timeMin": "={{ $('Set data').item.json.event_start }}",
+        "timeMax": "={{ $('Set data').item.json.event_end }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        -520
+      ],
+      "id": "45b9a9d3-3e52-4b42-9ee1-b5b5de65206d",
+      "name": "Check availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8W0dPmjbm8PtxV20",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $('Set data').item.json.calendar_id }}",
+          "mode": "id"
+        },
+        "start": "={{ $('Set data').item.json.event_start }}",
+        "end": "={{ $('Set data').item.json.event_end }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "description": "=Nombre: {{ $('Set data').item.json.client_name }}\nTeléfono: {{ $('Set data').item.json.client_phone }}\nID: {{ $('Set data').item.json.client_id }}",
+          "summary": "={{ $('Set data').item.json.client_name }} - {{ $('Set data').item.json.service }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -600,
+        -620
+      ],
+      "id": "58ef34ad-d535-423b-a6e8-9c65d15fcf9f",
+      "name": "Create event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8W0dPmjbm8PtxV20",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "={{ $('Set data').item.json.supabase_table_name }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "client_id",
+              "fieldValue": "={{ $('When Executed by Another Workflow').item.json.client_id }}"
+            },
+            {
+              "fieldId": "event_id",
+              "fieldValue": "={{ $json.id }}"
+            },
+            {
+              "fieldId": "calendar_id",
+              "fieldValue": "={{ $json.organizer.email }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        -620
+      ],
+      "id": "eba2fc9c-8d8e-478a-8724-5744b16e8c1b",
+      "name": "Add event to db",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PMEiM2p42E60tuGQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $('Set data').item.json.calendar_id }}",
+          "mode": "id"
+        },
+        "eventId": "={{ $('Set data').item.json.event_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        -220
+      ],
+      "id": "86f326c3-2a1f-48cb-92ee-b6a382ef5e9d",
+      "name": "Delete event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8W0dPmjbm8PtxV20",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "={{ $('Set data').item.json.supabase_table_name }}",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Set data').item.json.event_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        -220
+      ],
+      "id": "37b878dd-0a01-4902-af82-21d166e5e3a2",
+      "name": "Delete event from db",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PMEiM2p42E60tuGQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "={{ $('Set data').item.json.supabase_table_name }}",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "client_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Set data').item.json.client_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        -20
+      ],
+      "id": "4af4348c-8ca0-49a3-995d-1a90b9d19b80",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PMEiM2p42E60tuGQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.calendar_id }}",
+          "mode": "id"
+        },
+        "eventId": "={{ $json.event_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -820,
+        -20
+      ],
+      "id": "b2ebe509-82b7-45d2-8773-16ac5cb87886",
+      "name": "Get events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8W0dPmjbm8PtxV20",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $('Set data').item.json.calendar_id }}",
+          "mode": "id",
+          "__regex": "(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)"
+        },
+        "timeMin": "={{ $json.event_start }}",
+        "timeMax": "={{ $json.event_end }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        200
+      ],
+      "id": "b2b77cfc-6809-4b23-a9a2-6d070de01723",
+      "name": "Get availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8W0dPmjbm8PtxV20",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9413fb80-58a9-4761-a6ae-7e671615ade4",
+              "name": "output",
+              "value": "Evento creado correctamente",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -620
+      ],
+      "id": "6a34d9ed-6a88-42e1-8aef-de5178840d46",
+      "name": "Event created"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f8e27ba3-b0e3-4eab-bbb3-b8237130fae5",
+              "name": "output",
+              "value": "El horario no está disponible",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        -420
+      ],
+      "id": "c75d2357-affd-4c11-9aee-ce3adf5041d6",
+      "name": "Not availability"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "78cb8c8a-caaf-4a00-9658-78066e3f9127",
+              "name": "output",
+              "value": "Evento cancelado correctamente",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        -220
+      ],
+      "id": "5a37abd2-b60a-4c93-abbc-016fd05a23a0",
+      "name": "Event deleted"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "29e5a7ab-f52e-4c8e-9709-79ecd548d75f",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -820,
+        200
+      ],
+      "id": "89072a5e-a6f8-4cfe-80ff-535ffef47bea",
+      "name": "If available"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e5698980-2902-4002-b091-8c2986b05823",
+              "name": "output",
+              "value": "=Hay disponibilidad",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        100
+      ],
+      "id": "029ec4d8-046c-4649-b5ef-8862e448af11",
+      "name": "Availbility true"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e5698980-2902-4002-b091-8c2986b05823",
+              "name": "output",
+              "value": "=No hay disponibilidad",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -600,
+        300
+      ],
+      "id": "27359e57-864c-4fad-a660-8bc7f7eb3134",
+      "name": "Availbility false"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not availability",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Check availability",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get availability",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set data": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check availability": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create event": {
+      "main": [
+        [
+          {
+            "node": "Add event to db",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete event": {
+      "main": [
+        [
+          {
+            "node": "Delete event from db",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete event from db": {
+      "main": [
+        [
+          {
+            "node": "Event deleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Get events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add event to db": {
+      "main": [
+        [
+          {
+            "node": "Event created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability": {
+      "main": [
+        [
+          {
+            "node": "If available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If available": {
+      "main": [
+        [
+          {
+            "node": "Availbility true",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Availbility false",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 300
+  },
+  "versionId": "13c95d5c-9e3c-459f-9c2e-aec85c9a7b97",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
+  },
+  "id": "A3mEnBxRLgmH4VoN",
+  "tags": []
+}
