@@ -146,6 +146,32 @@ Workflow that manages user appointment requests. It processes natural language i
 
 ---
 
+---
+
+## 🔄 Repo & Client Sync Workflows
+
+These workflows handle automation around maintaining and syncing this workflow library across projects and client environments.
+
+---
+
+### 🚀 push-to-github
+
+Automatically pushes updated `.json` workflow files from the library to this GitHub repository.  
+This is used to keep the version-controlled library up to date without manual Git interaction.
+
+![Push to GitHub](screenshots/push-to-github.png)
+
+---
+
+### 🛰 update-client-instances
+
+Automatically syncs the latest workflows from this repository into multiple client n8n instances.  
+Useful when maintaining shared subworkflows, agent tools, or updating the base assistant logic across all deployments.
+
+![Update Client Instances](screenshots/update-client-instances.png)
+
+---
+
 ## 🙋‍♂️ About Me
 
 I use n8n to build AI-driven automations, mostly around chatbots, customer service, and human-agent coordination (via Chatwoot, WhatsApp, OpenAI, etc).
