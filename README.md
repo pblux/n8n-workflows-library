@@ -138,7 +138,7 @@ Key features:
 
 ### 🤖 scheduling-agent
 
-Main workflow that manages user appointment requests. It processes natural language inputs, detects scheduling intents (create, modify, or cancel), and delegates calendar actions to the internal calendar-operations tool.
+Workflow that manages user appointment requests. It processes natural language inputs, detects scheduling intents (create, modify, or cancel), and delegates calendar actions to the internal calendar-operations tool.
 
 > Requires: **Google Calendar**, **LLM API**
 
