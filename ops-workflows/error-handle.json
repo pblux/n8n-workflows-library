@@ -1,0 +1,129 @@
+{
+  "name": "error-handle - v1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "116232cf-65a0-4c91-a0c4-350468e8afb4",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.flowdata.url }}/api/v1/accounts/{{ $json.flowdata.account_id }}/conversations/{{ $json.flowdata.conversation_id }}/messages/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.flowdata.message }}"
+            },
+            {
+              "name": "private",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "e84e8e5d-1f44-4501-8aa0-4a4c3d44d2bc",
+      "name": "Send message",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a89hEWXzRSBs7DUC",
+          "name": "Chatwoot - Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a0809018-596f-46e4-a15f-9819cdafc435",
+              "name": "flowdata.url",
+              "value": "https://chatwoot.tuia.lat",
+              "type": "string"
+            },
+            {
+              "id": "5a70a809-9798-4cb1-80e2-38da3139e616",
+              "name": "flowdata.account_id",
+              "value": "1",
+              "type": "string"
+            },
+            {
+              "id": "7edb53b4-ea44-4654-ba65-0838bfb5c8f7",
+              "name": "flowdata.conversation_id",
+              "value": "2",
+              "type": "string"
+            },
+            {
+              "id": "c5a4fed9-91d6-4194-9117-df179ac638d2",
+              "name": "flowdata.message",
+              "value": "Error en tu.ia",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "dfd8faca-a160-4d05-b040-64421b6a0443",
+      "name": "Set field"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set field": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c2034178-a02a-43e5-9e30-941c1c6d3cbd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "882988602abf98e9851810221f0bc352f9ce0a09d7dee9102a69fb9dc41162c4"
+  },
+  "id": "i1ieJhhWZbVucBYx",
+  "tags": []
+}

@@ -1,6 +1,6 @@
 # n8n Workflows Library
 
-A curated collection of reusable **n8n sub-workflows** I use to build modular, AI-enabled automations.  
+A curated collection of reusable **n8n workflows** I use to build modular, AI-enabled automations.  
 This library serves as both a personal toolkit and a portfolio of how I design scalable automation logic.
 
 ---
